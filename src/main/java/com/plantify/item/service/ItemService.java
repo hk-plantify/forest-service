@@ -1,7 +1,7 @@
-package com.plantify.forest.service;
+package com.plantify.item.service;
 
-import com.plantify.forest.domain.dto.request.ItemRequest;
-import com.plantify.forest.domain.dto.response.ItemResponse;
+import com.plantify.item.domain.dto.request.ItemRequest;
+import com.plantify.item.domain.dto.response.ItemResponse;
 
 import java.util.List;
 

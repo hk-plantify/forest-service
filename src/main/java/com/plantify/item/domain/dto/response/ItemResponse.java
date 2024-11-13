@@ -1,8 +1,8 @@
-package com.plantify.forest.domain.dto.response;
+package com.plantify.item.domain.dto.response;
 
 
-import com.plantify.forest.domain.entity.Category;
-import com.plantify.forest.domain.entity.Item;
+import com.plantify.item.domain.entity.Category;
+import com.plantify.item.domain.entity.Item;
 
 import java.time.LocalDateTime;
 

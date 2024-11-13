@@ -1,12 +1,13 @@
-package com.plantify.forest.global.exception.errorcode;
+package com.plantify.item.global.exception.errorcode;
 
-import com.plantify.forest.global.exception.ErrorCode;
+import com.plantify.item.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
 public enum ItemErrorCode implements ErrorCode {
 
+    ITEM_ACCESS_DENIED(HttpStatus.FORBIDDEN, "아이템에 대한 접근 권한이 없습니다."),
     ITEM_NOT_FOUND(HttpStatus.NOT_FOUND, "아이템을 찾을 수 없습니다."),
     ITEM_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 존재하는 아이템입니다."),
     INVALID_ITEM_DATA(HttpStatus.BAD_REQUEST, "유효하지 않은 아이템 데이터입니다."),

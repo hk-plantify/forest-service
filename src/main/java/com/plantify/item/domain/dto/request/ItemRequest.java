@@ -1,7 +1,7 @@
-package com.plantify.forest.domain.dto.request;
+package com.plantify.item.domain.dto.request;
 
-import com.plantify.forest.domain.entity.Category;
-import com.plantify.forest.domain.entity.Item;
+import com.plantify.item.domain.entity.Category;
+import com.plantify.item.domain.entity.Item;
 
 public record ItemRequest(
         String name,

@@ -3,6 +3,7 @@ package com.plantify.item.service;
 import com.plantify.item.controller.client.AuthServiceClient;
 import com.plantify.item.domain.dto.response.UserResponse;
 import com.plantify.item.global.exception.ApplicationException;
+import com.plantify.item.global.exception.errorcode.ItemErrorCode;
 import com.plantify.item.global.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

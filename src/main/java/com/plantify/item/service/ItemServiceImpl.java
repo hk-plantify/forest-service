@@ -1,11 +1,11 @@
-package com.plantify.forest.service;
+package com.plantify.item.service;
 
-import com.plantify.forest.domain.dto.request.ItemRequest;
-import com.plantify.forest.domain.dto.response.ItemResponse;
-import com.plantify.forest.domain.entity.Item;
-import com.plantify.forest.global.exception.ApplicationException;
-import com.plantify.forest.global.exception.errorcode.ItemErrorCode;
-import com.plantify.forest.repository.ItemRepository;
+import com.plantify.item.domain.dto.request.ItemRequest;
+import com.plantify.item.domain.dto.response.ItemResponse;
+import com.plantify.item.domain.entity.Item;
+import com.plantify.item.global.exception.ApplicationException;
+import com.plantify.item.global.exception.errorcode.ItemErrorCode;
+import com.plantify.item.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
