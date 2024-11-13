@@ -1,4 +1,4 @@
-package com.plantify.forest.domain.dto;
+package com.plantify.forest.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
