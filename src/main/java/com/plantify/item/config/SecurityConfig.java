@@ -1,4 +1,4 @@
-package com.plantify.forest.config;
+package com.plantify.item.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

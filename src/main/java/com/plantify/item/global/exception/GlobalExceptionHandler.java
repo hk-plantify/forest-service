@@ -1,6 +1,6 @@
-package com.plantify.forest.global.exception;
+package com.plantify.item.global.exception;
 
-import com.plantify.forest.global.response.ApiResponse;
+import com.plantify.item.global.response.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

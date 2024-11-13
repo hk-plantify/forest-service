@@ -1,4 +1,4 @@
-package com.plantify.forest.global.exception;
+package com.plantify.item.global.exception;
 
 import org.springframework.http.HttpStatus;
 

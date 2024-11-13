@@ -1,4 +1,4 @@
-package com.plantify.forest.global.response;
+package com.plantify.item.global.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

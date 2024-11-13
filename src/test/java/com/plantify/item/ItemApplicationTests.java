@@ -1,10 +1,10 @@
-package com.plantify.forest;
+package com.plantify.item;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ForestApplicationTests {
+class ItemApplicationTests {
 
 	@Test
 	void contextLoads() {

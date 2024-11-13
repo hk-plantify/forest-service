@@ -1,4 +1,4 @@
-package com.plantify.forest.config;
+package com.plantify.item.config;
 
 import com.plantify.forest.controller.client.AuthServiceClient;
 import com.plantify.forest.domain.dto.response.UserResponse;

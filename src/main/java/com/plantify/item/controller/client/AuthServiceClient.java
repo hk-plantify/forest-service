@@ -1,7 +1,7 @@
-package com.plantify.forest.controller.client;
+package com.plantify.item.controller.client;
 
-import com.plantify.forest.domain.dto.response.UserResponse;
-import com.plantify.forest.global.response.ApiResponse;
+import com.plantify.item.domain.dto.response.UserResponse;
+import com.plantify.item.global.response.ApiResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
