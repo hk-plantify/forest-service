@@ -1,8 +1,10 @@
 package com.plantify.forest.global.exception.errorcode;
 
 import com.plantify.forest.global.exception.ErrorCode;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
+@RequiredArgsConstructor
 public enum AuthErrorCode implements ErrorCode {
 
     INVALID_TOKEN(HttpStatus.BAD_REQUEST, "유효하지 않은 토큰입니다."),
@@ -13,11 +15,6 @@ public enum AuthErrorCode implements ErrorCode {
 
     private final HttpStatus httpStatus;
     private final String message;
-
-    AuthErrorCode(HttpStatus httpStatus, String message) {
-        this.httpStatus = httpStatus;
-        this.message = message;
-    }
 
     @Override
     public HttpStatus getHttpStatus() {
