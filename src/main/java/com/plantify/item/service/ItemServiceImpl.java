@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 public class ItemServiceImpl implements ItemService {
 
     private final ItemRepository itemRepository;
+    private final AuthenticationService authenticationService;
 
     @Override
     public List<ItemResponse> getAllItems() {
@@ -28,6 +29,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemResponse addItem(String authorizationHeader, ItemRequest request) {
+        authenticationService.validateRole(authorizationHeader);
         Item item = request.toEntity();
         Item savedItem = itemRepository.save(item);
         return ItemResponse.from(savedItem);
@@ -35,6 +37,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemResponse updateItem(String authorizationHeader, Long itemId, ItemRequest request) {
+        authenticationService.validateRole(authorizationHeader);
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new ApplicationException(ItemErrorCode.ITEM_NOT_FOUND));
 
@@ -52,6 +55,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void deleteItem(String authorizationHeader, Long itemId) {
+        authenticationService.validateRole(authorizationHeader);
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new ApplicationException(ItemErrorCode.ITEM_NOT_FOUND));
         itemRepository.delete(item);
