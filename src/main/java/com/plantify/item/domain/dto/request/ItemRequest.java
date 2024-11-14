@@ -3,6 +3,8 @@ package com.plantify.item.domain.dto.request;
 import com.plantify.item.domain.entity.Category;
 import com.plantify.item.domain.entity.Item;
 
+import java.time.LocalDateTime;
+
 public record ItemRequest(
         String name,
         Long price,
@@ -16,6 +18,8 @@ public record ItemRequest(
                 .price(price)
                 .imageUri(imageUri)
                 .category(category)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build();
     }
 }

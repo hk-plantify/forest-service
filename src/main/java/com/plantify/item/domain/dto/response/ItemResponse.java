@@ -1,6 +1,5 @@
 package com.plantify.item.domain.dto.response;
 
-
 import com.plantify.item.domain.entity.Category;
 import com.plantify.item.domain.entity.Item;
 
