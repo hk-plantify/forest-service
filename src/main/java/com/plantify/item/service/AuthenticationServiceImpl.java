@@ -1,43 +1,44 @@
 package com.plantify.item.service;
 
-import com.plantify.item.controller.client.AuthServiceClient;
-import com.plantify.item.domain.dto.response.UserResponse;
+import com.plantify.item.client.UserInfoProvider;
 import com.plantify.item.global.exception.ApplicationException;
 import com.plantify.item.global.exception.errorcode.ItemErrorCode;
-import com.plantify.item.global.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.plantify.item.global.exception.ApplicationException.createAuthException;
-
 @Service
 @RequiredArgsConstructor
-public class AuthenticationServiceImpl implements AuthenticationService{
+public class AuthenticationServiceImpl implements AuthenticationService {
 
-    private final AuthServiceClient authServiceClient;
-    private final List<String> roles;
+    private final UserInfoProvider userInfoProvider;
+    private final List<String> adminRoles;
 
     @Override
-    public void validateRole(String authorizationHeader) {
-        UserResponse userInfo = getUserInfo(authorizationHeader);
-        String role = userInfo.role();
-        if (!roles.contains(role)) {
+    public boolean validateAdminRole(String authorizationHeader) {
+        String role = getRole(authorizationHeader);
+        if (adminRoles.contains(role)) {
+            return true;
+        }
+        throw new ApplicationException(ItemErrorCode.ITEM_ACCESS_DENIED);
+    }
+
+    @Override
+    public void validateOwnership(String authorizationHeader, Long ownerId) {
+        Long kakaoId = getKakaoId(authorizationHeader);
+        if (!kakaoId.equals(ownerId)) {
             throw new ApplicationException(ItemErrorCode.ITEM_ACCESS_DENIED);
         }
     }
 
     @Override
-    public UserResponse getUserInfo(String authorizationHeader) {
-        ApiResponse<UserResponse> response = authServiceClient.getUserInfo(authorizationHeader);
-        if (response.getStatus() == HttpStatus.OK) {
-            return response.getData();
-        } else {
-            throw createAuthException(response.getStatus());
-        }
+    public Long getKakaoId(String authorizationHeader) {
+        return userInfoProvider.getUserInfo(authorizationHeader).kakaoId();
     }
 
+    @Override
+    public String getRole(String authorizationHeader) {
+        return userInfoProvider.getUserInfo(authorizationHeader).role();
+    }
 }
-

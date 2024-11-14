@@ -1,9 +1,9 @@
 package com.plantify.item.service;
 
-import com.plantify.item.domain.dto.response.UserResponse;
-
 public interface AuthenticationService {
 
-    void validateRole(String authorizationHeader);
-    UserResponse getUserInfo(String authorizationHeader);
+    boolean validateAdminRole(String authorizationHeader);
+    void validateOwnership(String authorizationHeader, Long ownerId);
+    Long getKakaoId(String authorizationHeader);
+    String getRole(String authorizationHeader);
 }
