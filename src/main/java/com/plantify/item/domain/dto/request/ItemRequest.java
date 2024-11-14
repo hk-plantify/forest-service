@@ -3,8 +3,6 @@ package com.plantify.item.domain.dto.request;
 import com.plantify.item.domain.entity.Category;
 import com.plantify.item.domain.entity.Item;
 
-import java.time.LocalDateTime;
-
 public record ItemRequest(
         String name,
         Long price,
@@ -12,14 +10,13 @@ public record ItemRequest(
         Category category
 ) {
 
-    public Item toEntity() {
+    public Item toEntity(Long kakaoId) {
         return Item.builder()
                 .name(name)
+                .userId(kakaoId)
                 .price(price)
                 .imageUri(imageUri)
                 .category(category)
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
                 .build();
     }
 }

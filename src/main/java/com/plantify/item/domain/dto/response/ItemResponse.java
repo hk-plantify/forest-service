@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 
 public record ItemResponse(
         Long itemId,
+        Long userId,
         String name,
         Long price,
         String imageUri,
@@ -18,6 +19,7 @@ public record ItemResponse(
     public static ItemResponse from(Item item) {
         return new ItemResponse(
                 item.getItemId(),
+                item.getUserId(),
                 item.getName(),
                 item.getPrice(),
                 item.getImageUri(),
