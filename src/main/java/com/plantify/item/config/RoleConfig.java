@@ -9,7 +9,8 @@ import java.util.List;
 public class RoleConfig {
 
     @Bean
-    public List<String> roles() {
+    public List<String> adminRoles() {
         return List.of("MANAGER", "ADMIN");
     }
+
 }

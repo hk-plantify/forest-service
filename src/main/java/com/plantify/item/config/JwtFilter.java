@@ -1,6 +1,6 @@
 package com.plantify.item.config;
 
-import com.plantify.item.controller.client.AuthServiceClient;
+import com.plantify.item.client.AuthServiceClient;
 import com.plantify.item.domain.dto.response.UserResponse;
 import com.plantify.item.global.response.ApiResponse;
 import jakarta.servlet.FilterChain;

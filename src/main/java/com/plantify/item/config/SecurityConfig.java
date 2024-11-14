@@ -31,16 +31,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/v1/items/**")
                         .hasAnyRole("MANAGER", "ADMIN")
 
-                        .requestMatchers(HttpMethod.POST, "/v1/items/my-items")
-                        .hasAnyRole("USER", "MANAGER", "ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/v1/items/my-items/**")
-                        .hasAnyRole("USER", "MANAGER", "ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/v1/items/my-items/**")
-                        .hasAnyRole("MANAGER", "ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/v1/items/my-items/**")
+                        .requestMatchers("/v1/items/my-items/**")
                         .hasAnyRole("USER", "MANAGER", "ADMIN")
 
-                        .requestMatchers("/v1/items/my-items/using", "v1/items/my-items/using/**")
+                        .requestMatchers("/v1/items/my-items/using/**")
                         .hasAnyRole("USER", "MANAGER", "ADMIN")
 
                         .anyRequest()
