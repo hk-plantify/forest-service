@@ -27,7 +27,7 @@ public class PurchaseItem {
     @Column(nullable = false)
     private Long userId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private LocalDateTime purchaseDate;
 
     @Column(nullable = false)
