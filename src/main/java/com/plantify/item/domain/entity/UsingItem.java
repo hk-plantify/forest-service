@@ -6,35 +6,25 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Entity
-@Builder
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PurchaseItem {
+public class UsingItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
-    private Long purchaseItemId;
+    private Long usingItemId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "itemId", nullable = false)
-    private Item item;
+    @JoinColumn(name = "myItemId", nullable = false)
+    private MyItem myItem;
 
     @Column(nullable = false)
-    private Long userId;
-
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime purchaseDate;
+    private Double posX;
 
     @Column(nullable = false)
-    private Status status;
-
-    @PrePersist
-    protected void onCreate() {
-        purchaseDate = LocalDateTime.now();
-    }
+    private Double posY;
 }
