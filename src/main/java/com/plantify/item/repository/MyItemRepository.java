@@ -1,13 +1,12 @@
 package com.plantify.item.repository;
 
-import com.plantify.item.domain.entity.PurchaseItem;
+import com.plantify.item.domain.entity.MyItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface MyItemRepository extends JpaRepository<PurchaseItem, Long> {
+public interface MyItemRepository extends JpaRepository<MyItem, Long> {
 
-    List<PurchaseItem> findByKakaoId(Long kakaoId);
-    Optional<PurchaseItem> findByKakaoIdAndMyItemId(Long kakaoId, Long purchaseItemId);
+    List<MyItem> findByUserId(Long userId);
 }
