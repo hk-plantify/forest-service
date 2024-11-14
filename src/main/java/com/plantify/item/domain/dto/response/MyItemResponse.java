@@ -1,29 +1,31 @@
 package com.plantify.item.domain.dto.response;
 
-import com.plantify.item.domain.entity.PurchaseItem;
+import com.plantify.item.domain.entity.MyItem;
 import com.plantify.item.domain.entity.Status;
 
 import java.time.LocalDateTime;
 
 public record MyItemResponse(
-        Long purchaseItemId,
+        Long myItemId,
         Long itemId,
         String itemName,
         Long price,
         String imageUri,
         Status status,
-        LocalDateTime purchaseDate
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt
 ) {
 
-    public static MyItemResponse from(PurchaseItem purchaseItem) {
+    public static MyItemResponse from(MyItem myItem) {
         return new MyItemResponse(
-                purchaseItem.getPurchaseItemId(),
-                purchaseItem.getItem().getItemId(),
-                purchaseItem.getItem().getName(),
-                purchaseItem.getItem().getPrice(),
-                purchaseItem.getItem().getImageUri(),
-                purchaseItem.getStatus(),
-                purchaseItem.getPurchaseDate()
+                myItem.getMyItemId(),
+                myItem.getItem().getItemId(),
+                myItem.getItem().getName(),
+                myItem.getItem().getPrice(),
+                myItem.getItem().getImageUri(),
+                myItem.getStatus(),
+                myItem.getCreatedAt(),
+                myItem.getUpdatedAt()
         );
     }
 }
