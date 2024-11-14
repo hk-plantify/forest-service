@@ -1,4 +1,4 @@
-package com.plantify.item.controller.client;
+package com.plantify.item.client;
 
 import com.plantify.item.domain.dto.response.UserResponse;
 import com.plantify.item.global.response.ApiResponse;
