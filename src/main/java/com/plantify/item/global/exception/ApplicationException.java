@@ -16,12 +16,4 @@ public class ApplicationException extends RuntimeException {
     public HttpStatus getHttpStatus() {
         return null;
     }
-
-    public static ApplicationException createAuthException(HttpStatus status) {
-        return switch (status) {
-            case BAD_REQUEST -> new ApplicationException(AuthErrorCode.UNSUPPORTED_TOKEN);
-            case UNAUTHORIZED -> new ApplicationException(AuthErrorCode.EXPIRED_TOKEN);
-            default -> new ApplicationException(AuthErrorCode.INVALID_TOKEN);
-        };
-    }
 }
