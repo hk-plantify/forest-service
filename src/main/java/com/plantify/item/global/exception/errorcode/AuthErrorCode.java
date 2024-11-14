@@ -1,11 +1,7 @@
 package com.plantify.item.global.exception.errorcode;
 
-<<<<<<< HEAD:src/main/java/com/plantify/forest/global/exception/errorcode/AuthErrorCode.java
-import com.plantify.forest.global.exception.ErrorCode;
-import lombok.RequiredArgsConstructor;
-=======
 import com.plantify.item.global.exception.ErrorCode;
->>>>>>> bridge:src/main/java/com/plantify/item/global/exception/errorcode/AuthErrorCode.java
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
