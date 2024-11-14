@@ -29,20 +29,22 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemResponse addItem(String authorizationHeader, ItemRequest request) {
-        authenticationService.validateRole(authorizationHeader);
-        Item item = request.toEntity();
+        Long kakaoId = authenticationService.getKakaoId(authorizationHeader);
+        authenticationService.validateAdminRole(authorizationHeader);
+        Item item = request.toEntity(kakaoId);
         Item savedItem = itemRepository.save(item);
         return ItemResponse.from(savedItem);
     }
 
     @Override
     public ItemResponse updateItem(String authorizationHeader, Long itemId, ItemRequest request) {
-        authenticationService.validateRole(authorizationHeader);
+        authenticationService.validateAdminRole(authorizationHeader);
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new ApplicationException(ItemErrorCode.ITEM_NOT_FOUND));
 
         Item updatedItem = Item.builder()
                 .itemId(item.getItemId())
+                .userId(item.getUserId())
                 .name(request.name())
                 .price(request.price())
                 .imageUri(request.imageUri())
@@ -55,7 +57,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void deleteItem(String authorizationHeader, Long itemId) {
-        authenticationService.validateRole(authorizationHeader);
+        authenticationService.validateAdminRole(authorizationHeader);
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new ApplicationException(ItemErrorCode.ITEM_NOT_FOUND));
         itemRepository.delete(item);
