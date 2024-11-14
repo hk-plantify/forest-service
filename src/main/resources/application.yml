@@ -1,3 +1,27 @@
+server:
+  port: 8083
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+    password: ${JASYPT_PASSWORD}
+
 spring:
   application:
     name: item
+  datasource:
+    url: ENC(UJazH0iM2udLRuftTDVSiOEK03IyFZRsS/KkX2CnluqXhfxfGjEpEx74wSkg/hV+yxtHE8pqyHkhQJdLRvRF+VOyy4QP9iegrVkbigRXYhI=)
+    username: ENC(XhGT41xwg0J9hSXkV9tPjQ==)
+    password: ENC(cOWaniGDoCFEXR9v+wRBVEwsJ5Hg6vQN)
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database: mysql
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+auth:
+  service:
+    url: http://localhost:8080
