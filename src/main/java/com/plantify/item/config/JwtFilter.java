@@ -1,8 +1,8 @@
 package com.plantify.item.config;
 
-import com.plantify.forest.controller.client.AuthServiceClient;
-import com.plantify.forest.domain.dto.response.UserResponse;
-import com.plantify.forest.global.response.ApiResponse;
+import com.plantify.item.controller.client.AuthServiceClient;
+import com.plantify.item.domain.dto.response.UserResponse;
+import com.plantify.item.global.response.ApiResponse;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
