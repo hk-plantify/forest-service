@@ -10,10 +10,10 @@ public record ItemRequest(
         Category category
 ) {
 
-    public Item toEntity(Long kakaoId) {
+    public Item toEntity(Long userId) {
         return Item.builder()
                 .name(name)
-                .userId(kakaoId)
+                .userId(userId)
                 .price(price)
                 .imageUri(imageUri)
                 .category(category)

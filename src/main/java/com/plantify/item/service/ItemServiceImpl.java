@@ -28,23 +28,21 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemResponse addItem(String authorizationHeader, ItemRequest request) {
-        Long kakaoId = authenticationService.getKakaoId(authorizationHeader);
-        authenticationService.validateAdminRole(authorizationHeader);
-        Item item = request.toEntity(kakaoId);
+    public ItemResponse addItem(ItemRequest request) {
+        Long userId = authenticationService.getUserId();
+        authenticationService.validateAdminRole();
+        Item item = request.toEntity(userId);
         Item savedItem = itemRepository.save(item);
         return ItemResponse.from(savedItem);
     }
 
     @Override
-    public ItemResponse updateItem(String authorizationHeader, Long itemId, ItemRequest request) {
-        authenticationService.validateAdminRole(authorizationHeader);
+    public ItemResponse updateItem(Long itemId, ItemRequest request) {
+        authenticationService.validateAdminRole();
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new ApplicationException(ItemErrorCode.ITEM_NOT_FOUND));
 
-        Item updatedItem = Item.builder()
-                .itemId(item.getItemId())
-                .userId(item.getUserId())
+        Item updatedItem = item.toBuilder()
                 .name(request.name())
                 .price(request.price())
                 .imageUri(request.imageUri())
@@ -56,8 +54,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void deleteItem(String authorizationHeader, Long itemId) {
-        authenticationService.validateAdminRole(authorizationHeader);
+    public void deleteItem(Long itemId) {
+        authenticationService.validateAdminRole();
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new ApplicationException(ItemErrorCode.ITEM_NOT_FOUND));
         itemRepository.delete(item);
