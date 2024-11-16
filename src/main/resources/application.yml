@@ -25,3 +25,6 @@ spring:
 auth:
   service:
     url: http://localhost:8080
+admin:
+  service:
+    url: http://localhost:8081
