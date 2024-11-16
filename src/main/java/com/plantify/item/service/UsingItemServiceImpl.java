@@ -22,58 +22,54 @@ public class UsingItemServiceImpl implements UsingItemService {
     private final MyItemRepository myItemRepository;
     private final UsingItemRepository usingItemRepository;
     private final AuthenticationService authenticationService;
-    private final ItemRepository itemRepository;
 
     @Override
-    public List<UsingItemResponse> getAllUsingItems(String authorizationHeader) {
-        if (authenticationService.validateAdminRole(authorizationHeader)) {
+    public List<UsingItemResponse> getAllUsingItems() {
+        if (authenticationService.validateAdminRole()) {
             return usingItemRepository.findAll()
                     .stream()
                     .map(UsingItemResponse::from)
                     .collect(Collectors.toList());
         }
 
-        Long kakaoId = authenticationService.getKakaoId(authorizationHeader);
-        return usingItemRepository.findByUserId(kakaoId)
+        Long userId = authenticationService.getUserId();
+        return usingItemRepository.findByUserId(userId)
                 .stream()
                 .map(UsingItemResponse::from)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public UsingItemResponse addUsingItem(String authorizationHeader, UsingItemRequest request) {
-        Long kakaoId = authenticationService.getKakaoId(authorizationHeader);
+    public UsingItemResponse addUsingItem(UsingItemRequest request) {
         MyItem myItem = myItemRepository.findById(request.myItemId())
                 .orElseThrow(() -> new ApplicationException(ItemErrorCode.ITEM_NOT_FOUND));
 
-        authenticationService.validateOwnership(authorizationHeader, myItem.getUserId());
+        authenticationService.validateOwnership(myItem.getUserId());
         UsingItem usingItem = request.toEntity(myItem);
         UsingItem savedUsingItem = usingItemRepository.save(usingItem);
         return UsingItemResponse.from(savedUsingItem);
     }
 
     @Override
-    public UsingItemResponse updateUsingItem(String authorizationHeader, Long usingItemId, UsingItemRequest request) {
+    public UsingItemResponse updateUsingItem(Long usingItemId, UsingItemRequest request) {
         UsingItem usingItem = usingItemRepository.findById(usingItemId)
                 .orElseThrow(() -> new ApplicationException(ItemErrorCode.ITEM_NOT_FOUND));
-        authenticationService.validateOwnership(authorizationHeader, usingItem.getMyItem().getUserId());
+        authenticationService.validateOwnership(usingItem.getMyItem().getUserId());
 
-        usingItem = UsingItem.builder()
-                .usingItemId(usingItem.getUsingItemId())
-                .myItem(usingItem.getMyItem())
+        UsingItem updatedUsingItem = usingItem.toBuilder()
                 .posX(request.posX())
                 .posY(request.posY())
                 .build();
 
-        UsingItem savedUsingItem = usingItemRepository.save(usingItem);
+        UsingItem savedUsingItem = usingItemRepository.save(updatedUsingItem);
         return UsingItemResponse.from(savedUsingItem);
     }
 
     @Override
-    public void deleteUsingItem(String authorizationHeader, Long usingItemId) {
+    public void deleteUsingItem(Long usingItemId) {
         UsingItem usingItem = usingItemRepository.findById(usingItemId)
                 .orElseThrow(() -> new ApplicationException(ItemErrorCode.ITEM_NOT_FOUND));
-        authenticationService.validateOwnership(authorizationHeader, usingItem.getMyItem().getUserId());
+        authenticationService.validateOwnership(usingItem.getMyItem().getUserId());
         usingItemRepository.delete(usingItem);
     }
 }

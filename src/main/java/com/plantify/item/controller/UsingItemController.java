@@ -19,30 +19,27 @@ public class UsingItemController {
     private final UsingItemService usingItemService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<UsingItemResponse>>> getAllUsingItems(
-            @RequestHeader("Authorization") String authorizationHeader) {
-        List<UsingItemResponse> allUsingItems = usingItemService.getAllUsingItems(authorizationHeader);
+    public ResponseEntity<ApiResponse<List<UsingItemResponse>>> getAllUsingItems() {
+        List<UsingItemResponse> allUsingItems = usingItemService.getAllUsingItems();
         return ResponseEntity.ok(ApiResponse.ok(allUsingItems));
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<UsingItemResponse>> createUsingItem(
-            @RequestHeader("Authorization") String authorizationHeader, @RequestBody UsingItemRequest request) {
-        UsingItemResponse response = usingItemService.addUsingItem(authorizationHeader, request);
+    public ResponseEntity<ApiResponse<UsingItemResponse>> createUsingItem(@RequestBody UsingItemRequest request) {
+        UsingItemResponse response = usingItemService.addUsingItem(request);
         return ResponseEntity.ok(ApiResponse.ok(response));
     }
 
     @PutMapping("/{usingItemId}")
     public ResponseEntity<ApiResponse<UsingItemResponse>> updateUsingItem(
-            @RequestHeader("Authorization") String authorizationHeader, Long usingItemId, @RequestBody UsingItemRequest request) {
-        UsingItemResponse response = usingItemService.updateUsingItem(authorizationHeader, usingItemId, request);
+            @PathVariable Long usingItemId, @RequestBody UsingItemRequest request) {
+        UsingItemResponse response = usingItemService.updateUsingItem(usingItemId, request);
         return ResponseEntity.ok(ApiResponse.ok(response));
     }
 
     @DeleteMapping("/{usingItemId}")
-    public ResponseEntity<ApiResponse<UsingItemResponse>> deleteUsingItem(
-        @RequestHeader("Authorization") String authorizationHeader, @PathVariable Long usingItemId) {
-        usingItemService.deleteUsingItem(authorizationHeader, usingItemId);
+    public ResponseEntity<ApiResponse<UsingItemResponse>> deleteUsingItem(@PathVariable Long usingItemId) {
+        usingItemService.deleteUsingItem(usingItemId);
         return ResponseEntity.ok(ApiResponse.ok());
     }
 }
