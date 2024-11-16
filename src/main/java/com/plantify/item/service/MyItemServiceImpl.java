@@ -23,45 +23,40 @@ public class MyItemServiceImpl implements MyItemService {
     private final AuthenticationService authenticationService;
 
     @Override
-    public List<MyItemResponse> getAllMyItems(String authorizationHeader) {
-        if (authenticationService.validateAdminRole(authorizationHeader)) {
+    public List<MyItemResponse> getAllMyItems() {
+        if (authenticationService.validateAdminRole()) {
             return myItemRepository.findAll()
                     .stream()
                     .map(MyItemResponse::from)
                     .collect(Collectors.toList());
         }
 
-        Long kakaoId = authenticationService.getKakaoId(authorizationHeader);
-        return myItemRepository.findByUserId(kakaoId)
+        Long userId = authenticationService.getUserId();
+        return myItemRepository.findByUserId(userId)
                 .stream()
                 .map(MyItemResponse::from)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public MyItemResponse addMyItem(String authorizationHeader, MyItemRequest request) {
-        Long kakaoId = authenticationService.getKakaoId(authorizationHeader);
+    public MyItemResponse addMyItem(MyItemRequest request) {
+        Long userId = authenticationService.getUserId();
         Item item = itemRepository.findById(request.itemId())
                 .orElseThrow(() -> new ApplicationException(ItemErrorCode.ITEM_NOT_FOUND));
 
-        MyItem myItem = request.toEntity(kakaoId, item);
+        MyItem myItem = request.toEntity(userId, item);
         MyItem savedItem = myItemRepository.save(myItem);
         return MyItemResponse.from(savedItem);
     }
 
     @Override
-    public MyItemResponse updateMyItem(String authorizationHeader, Long myItemId, MyItemRequest request) {
+    public MyItemResponse updateMyItem(Long myItemId, MyItemRequest request) {
         MyItem myItem = myItemRepository.findById(myItemId)
                 .orElseThrow(() -> new ApplicationException(ItemErrorCode.ITEM_NOT_FOUND));
-        authenticationService.validateOwnership(authorizationHeader, myItem.getUserId());
+        authenticationService.validateOwnership(myItem.getUserId());
 
-        MyItem updatedItem = MyItem.builder()
-                .myItemId(myItem.getMyItemId())
-                .item(myItem.getItem())
-                .userId(myItem.getUserId())
+        MyItem updatedItem = myItem.toBuilder()
                 .status(request.status())
-                .createdAt(myItem.getCreatedAt())
-                .updatedAt(myItem.getUpdatedAt())
                 .build();
 
         MyItem savedItem = myItemRepository.save(updatedItem);
@@ -69,10 +64,10 @@ public class MyItemServiceImpl implements MyItemService {
     }
 
     @Override
-    public void deleteItem(String authorizationHeader, Long myItemId) {
+    public void deleteItem(Long myItemId) {
         MyItem myItem = myItemRepository.findById(myItemId)
                 .orElseThrow(() -> new ApplicationException(ItemErrorCode.ITEM_NOT_FOUND));
-        authenticationService.validateOwnership(authorizationHeader, myItem.getUserId());
+        authenticationService.validateOwnership(myItem.getUserId());
         myItemRepository.delete(myItem);
     }
 }

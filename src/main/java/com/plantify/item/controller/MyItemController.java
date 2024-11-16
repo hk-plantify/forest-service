@@ -18,30 +18,26 @@ public class MyItemController {
     private final MyItemService myItemService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<MyItemResponse>>> getAllMyItems(
-            @RequestHeader("Authorization") String authorizationHeader) {
-        List<MyItemResponse> allMyItems = myItemService.getAllMyItems(authorizationHeader);
+    public ResponseEntity<ApiResponse<List<MyItemResponse>>> getAllMyItems() {
+        List<MyItemResponse> allMyItems = myItemService.getAllMyItems();
         return ResponseEntity.ok(ApiResponse.ok(allMyItems));
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<MyItemResponse>> createMyItem(
-            @RequestHeader("Authorization") String authorizationHeader, @RequestBody MyItemRequest request) {
-        MyItemResponse response = myItemService.addMyItem(authorizationHeader, request);
+    public ResponseEntity<ApiResponse<MyItemResponse>> createMyItem(@RequestBody MyItemRequest request) {
+        MyItemResponse response = myItemService.addMyItem(request);
         return ResponseEntity.ok(ApiResponse.ok(response));
     }
 
     @PutMapping("/{myItemId}")
-    public ResponseEntity<ApiResponse<MyItemResponse>> updateMyItem(
-            @RequestHeader("Authorization") String authorizationHeader, @PathVariable Long myItemId, @RequestBody MyItemRequest request) {
-        MyItemResponse response = myItemService.updateMyItem(authorizationHeader, myItemId, request);
+    public ResponseEntity<ApiResponse<MyItemResponse>> updateMyItem(@PathVariable Long myItemId, @RequestBody MyItemRequest request) {
+        MyItemResponse response = myItemService.updateMyItem(myItemId, request);
         return ResponseEntity.ok(ApiResponse.ok(response));
     }
 
     @DeleteMapping("/{myItemId}")
-    public ResponseEntity<ApiResponse<MyItemResponse>> deleteMyItem(
-            @RequestHeader("Authorization") String authorizationHeader, @PathVariable Long myItemId) {
-        myItemService.deleteItem(authorizationHeader, myItemId);
+    public ResponseEntity<ApiResponse<MyItemResponse>> deleteMyItem(@PathVariable Long myItemId) {
+        myItemService.deleteItem(myItemId);
         return ResponseEntity.ok(ApiResponse.ok());
     }
 }
