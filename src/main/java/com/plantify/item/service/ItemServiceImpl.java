@@ -18,6 +18,7 @@ public class ItemServiceImpl implements ItemService {
 
     private final ItemRepository itemRepository;
     private final AuthenticationService authenticationService;
+    private final InternalService internalService;
 
     @Override
     public List<ItemResponse> getAllItems() {
@@ -29,16 +30,18 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemResponse addItem(ItemRequest request) {
-        Long userId = authenticationService.getUserId();
-        authenticationService.validateAdminRole();
-        Item item = request.toEntity(userId);
+        Long adminId = authenticationService.getUserId();
+        Item item = request.toEntity(adminId);
         Item savedItem = itemRepository.save(item);
+
+        internalService.recordActivityLog("ITEM", savedItem.getItemId(), "CREATE", adminId);
+
         return ItemResponse.from(savedItem);
     }
 
     @Override
     public ItemResponse updateItem(Long itemId, ItemRequest request) {
-        authenticationService.validateAdminRole();
+        Long adminId = authenticationService.getUserId();
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new ApplicationException(ItemErrorCode.ITEM_NOT_FOUND));
 
@@ -48,16 +51,21 @@ public class ItemServiceImpl implements ItemService {
                 .imageUri(request.imageUri())
                 .category(request.category())
                 .build();
-
         Item savedItem = itemRepository.save(updatedItem);
+
+        internalService.recordActivityLog("ITEM", itemId, "UPDATE", adminId);
+
         return ItemResponse.from(savedItem);
     }
 
     @Override
     public void deleteItem(Long itemId) {
-        authenticationService.validateAdminRole();
+        Long adminId = authenticationService.getUserId();
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new ApplicationException(ItemErrorCode.ITEM_NOT_FOUND));
+
         itemRepository.delete(item);
+
+        internalService.recordActivityLog("ITEM", itemId, "DELETE", adminId);
     }
 }

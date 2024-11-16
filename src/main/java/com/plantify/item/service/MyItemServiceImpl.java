@@ -21,6 +21,7 @@ public class MyItemServiceImpl implements MyItemService {
     private final MyItemRepository myItemRepository;
     private final ItemRepository itemRepository;
     private final AuthenticationService authenticationService;
+    private final InternalService internalService;
 
     @Override
     public List<MyItemResponse> getAllMyItems() {
@@ -46,6 +47,9 @@ public class MyItemServiceImpl implements MyItemService {
 
         MyItem myItem = request.toEntity(userId, item);
         MyItem savedItem = myItemRepository.save(myItem);
+
+        internalService.recordActivityLog("ITEM", savedItem.getMyItemId(), "CREATE", userId);
+
         return MyItemResponse.from(savedItem);
     }
 
@@ -55,19 +59,27 @@ public class MyItemServiceImpl implements MyItemService {
                 .orElseThrow(() -> new ApplicationException(ItemErrorCode.ITEM_NOT_FOUND));
         authenticationService.validateOwnership(myItem.getUserId());
 
+        Long userId = authenticationService.getUserId();
+
         MyItem updatedItem = myItem.toBuilder()
                 .status(request.status())
                 .build();
-
         MyItem savedItem = myItemRepository.save(updatedItem);
+
+        internalService.recordActivityLog("ITEM", myItemId, "UPDATE", userId);
+
         return MyItemResponse.from(savedItem);
     }
 
     @Override
     public void deleteItem(Long myItemId) {
+        Long userId = authenticationService.getUserId();
         MyItem myItem = myItemRepository.findById(myItemId)
                 .orElseThrow(() -> new ApplicationException(ItemErrorCode.ITEM_NOT_FOUND));
         authenticationService.validateOwnership(myItem.getUserId());
+
         myItemRepository.delete(myItem);
+
+        internalService.recordActivityLog("ITEM", myItemId, "DELETE", userId);
     }
 }

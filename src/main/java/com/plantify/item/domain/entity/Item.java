@@ -22,7 +22,7 @@ public class Item extends BaseEntity {
     @Column(unique = true, nullable = false)
     private Long itemId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private Long userId;
 
     @Column(nullable = false)

@@ -21,38 +21,31 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers(HttpMethod.GET, "/v1/items")
-                        .permitAll()
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui.html"
+                        ).permitAll()
 
-                        .requestMatchers(HttpMethod.POST, "/v1/items/**")
-                        .hasAnyRole("MANAGER", "ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/v1/items/**")
-                        .hasAnyRole("MANAGER", "ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/v1/items/**")
-                        .hasAnyRole("MANAGER", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/v1/items").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/v1/items/**").hasAnyRole("MANAGER", "ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/v1/items/**").hasAnyRole("MANAGER", "ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/v1/items/**").hasAnyRole("MANAGER", "ADMIN")
 
-                        .requestMatchers(HttpMethod.GET, "/v1/items/my-items")
-                        .hasAnyRole("USER", "MANAGER", "ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/v1/items/my-items")
-                        .hasAnyRole("USER", "MANAGER", "ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/v1/items/my-items/**")
-                        .hasAnyRole("MANAGER", "ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/v1/items/my-items/**")
-                        .hasAnyRole("MANAGER", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/v1/items/my-items").hasAnyRole("USER", "MANAGER", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/v1/items/my-items").hasAnyRole("USER", "MANAGER", "ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/v1/items/my-items/**").hasAnyRole("USER", "MANAGER", "ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/v1/items/my-items/**").hasAnyRole("USER", "MANAGER", "ADMIN")
 
-                        .requestMatchers(HttpMethod.GET, "/v1/items/my-items/using")
-                        .hasAnyRole("USER", "MANAGER", "ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/v1/items/my-items/using")
-                        .hasAnyRole("USER", "MANAGER", "ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/v1/items/my-items/using/**")
-                        .hasAnyRole("MANAGER", "ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/v1/items/my-items/using/**")
-                        .hasAnyRole("MANAGER", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/v1/items/my-items/using").hasAnyRole("USER", "MANAGER", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/v1/items/my-items/using").hasAnyRole("USER", "MANAGER", "ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/v1/items/my-items/using/**").hasAnyRole("USER", "MANAGER", "ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/v1/items/my-items/using/**").hasAnyRole("USER", "MANAGER", "ADMIN")
 
-                        .anyRequest()
-                        .authenticated()
+                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 }
