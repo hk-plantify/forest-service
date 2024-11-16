@@ -36,7 +36,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
                 if (authResponse.getStatus() == HttpStatus.OK && authResponse.getData() != null) {
                     AuthUserResponse userResponse = authResponse.getData();
-                    Authentication authentication = getAuthentication(userResponse);
+                    Authentication authentication = getAuthentication(userResponse, token);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             } catch (Exception e) {}
@@ -44,9 +44,10 @@ public class JwtFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private Authentication getAuthentication(AuthUserResponse userResponse) {
+    private Authentication getAuthentication(AuthUserResponse userResponse, String token) {
         return new UsernamePasswordAuthenticationToken(
-                userResponse.userId(), null,
+                userResponse.userId(),
+                token,
                 List.of(new SimpleGrantedAuthority("ROLE_" + userResponse.role()))
         );
     }
@@ -59,3 +60,5 @@ public class JwtFilter extends OncePerRequestFilter {
         return null;
     }
 }
+
+
