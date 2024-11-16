@@ -24,23 +24,20 @@ public class ItemController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<ItemResponse>> createItem(
-            @RequestHeader("Authorization") String authorizationHeader, @RequestBody ItemRequest request) {
-        ItemResponse response = itemService.addItem(authorizationHeader, request);
+    public ResponseEntity<ApiResponse<ItemResponse>> createItem(@RequestBody ItemRequest request) {
+        ItemResponse response = itemService.addItem(request);
         return ResponseEntity.ok(ApiResponse.ok(response));
     }
 
     @PutMapping("/{itemId}")
-    public ResponseEntity<ApiResponse<ItemResponse>> updateItem(
-            @RequestHeader("Authorization") String authorizationHeader, @PathVariable Long itemId, @RequestBody ItemRequest request) {
-        ItemResponse response = itemService.updateItem(authorizationHeader, itemId, request);
+    public ResponseEntity<ApiResponse<ItemResponse>> updateItem( @PathVariable Long itemId, @RequestBody ItemRequest request) {
+        ItemResponse response = itemService.updateItem(itemId, request);
         return ResponseEntity.ok(ApiResponse.ok(response));
     }
 
     @DeleteMapping("/{itemId}")
-    public ResponseEntity<ApiResponse<Void>> deleteItem(
-            @RequestHeader("Authorization") String authorizationHeader, @PathVariable Long itemId) {
-        itemService.deleteItem(authorizationHeader, itemId);
+    public ResponseEntity<ApiResponse<Void>> deleteItem(@PathVariable Long itemId) {
+        itemService.deleteItem(itemId);
         return ResponseEntity.ok(ApiResponse.ok());
     }
 }

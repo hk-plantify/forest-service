@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface MyItemService {
 
-    List<MyItemResponse> getAllMyItems(String authorizationHeader);
-    MyItemResponse addMyItem(String authorizationHeader, MyItemRequest myItemRequest);
-    MyItemResponse updateMyItem(String authorizationHeader, Long myItemId, MyItemRequest request);
-    void deleteItem(String authorizationHeader, Long myItemId);
+    List<MyItemResponse> getAllMyItems();
+    MyItemResponse addMyItem(MyItemRequest request);
+    MyItemResponse updateMyItem(Long myItemId, MyItemRequest request);
+    void deleteItem(Long myItemId);
 }

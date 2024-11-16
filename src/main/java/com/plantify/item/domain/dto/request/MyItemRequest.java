@@ -6,9 +6,9 @@ import com.plantify.item.domain.entity.Status;
 
 public record MyItemRequest(Long itemId, Status status) {
 
-    public MyItem toEntity(Long kakaoId, Item item) {
+    public MyItem toEntity(Long userId, Item item) {
         return MyItem.builder()
-                .userId(kakaoId)
+                .userId(userId)
                 .item(item)
                 .status(status)
                 .build();

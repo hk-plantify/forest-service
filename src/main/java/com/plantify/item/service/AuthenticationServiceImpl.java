@@ -16,8 +16,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final List<String> adminRoles;
 
     @Override
-    public boolean validateAdminRole(String authorizationHeader) {
-        String role = getRole(authorizationHeader);
+    public boolean validateAdminRole() {
+        String role = userInfoProvider.getUserInfo().role();
         if (adminRoles.contains(role)) {
             return true;
         }
@@ -25,20 +25,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public void validateOwnership(String authorizationHeader, Long ownerId) {
-        Long kakaoId = getKakaoId(authorizationHeader);
-        if (!kakaoId.equals(ownerId)) {
+    public void validateOwnership(Long ownerId) {
+        Long userId = userInfoProvider.getUserInfo().userId();
+        if (!userId.equals(ownerId)) {
             throw new ApplicationException(ItemErrorCode.ITEM_ACCESS_DENIED);
         }
     }
 
     @Override
-    public Long getKakaoId(String authorizationHeader) {
-        return userInfoProvider.getUserInfo(authorizationHeader).kakaoId();
-    }
-
-    @Override
-    public String getRole(String authorizationHeader) {
-        return userInfoProvider.getUserInfo(authorizationHeader).role();
+    public Long getUserId() {
+        return userInfoProvider.getUserInfo().userId();
     }
 }
