@@ -1,7 +1,7 @@
 package com.plantify.item.config;
 
 import com.plantify.item.client.AuthServiceClient;
-import com.plantify.item.domain.dto.response.UserResponse;
+import com.plantify.item.domain.dto.response.AuthUserResponse;
 import com.plantify.item.global.response.ApiResponse;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -32,10 +32,10 @@ public class JwtFilter extends OncePerRequestFilter {
         String token = resolveToken(request);
         if (token != null) {
             try {
-                ApiResponse<UserResponse> authResponse = authServiceClient.getUserInfo("Bearer " + token);
+                ApiResponse<AuthUserResponse> authResponse = authServiceClient.getUserInfo("Bearer " + token);
 
                 if (authResponse.getStatus() == HttpStatus.OK && authResponse.getData() != null) {
-                    UserResponse userResponse = authResponse.getData();
+                    AuthUserResponse userResponse = authResponse.getData();
                     Authentication authentication = getAuthentication(userResponse);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
@@ -44,7 +44,7 @@ public class JwtFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private Authentication getAuthentication(UserResponse userResponse) {
+    private Authentication getAuthentication(AuthUserResponse userResponse) {
         return new UsernamePasswordAuthenticationToken(
                 userResponse.kakaoId(), null,
                 List.of(new SimpleGrantedAuthority("ROLE_" + userResponse.role()))
