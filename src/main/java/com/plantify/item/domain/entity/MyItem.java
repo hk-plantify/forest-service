@@ -26,7 +26,4 @@ public class MyItem extends BaseEntity {
 
     @Column(nullable = false)
     private Long userId;
-
-    @Column(nullable = false)
-    private Status status;
 }
