@@ -1,4 +1,4 @@
-package com.plantify.item.client;
+package com.plantify.item.util;
 
 import com.plantify.item.domain.dto.response.AuthUserResponse;
 import com.plantify.item.global.exception.ApplicationException;
