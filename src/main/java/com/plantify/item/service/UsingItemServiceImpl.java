@@ -20,8 +20,6 @@ public class UsingItemServiceImpl implements UsingItemService {
 
     private final MyItemRepository myItemRepository;
     private final UsingItemRepository usingItemRepository;
-    private final AuthenticationService authenticationService;
-    private final InternalService internalService;
 
     @Override
     public List<UsingItemResponse> getAllUsingItems() {
@@ -45,11 +43,8 @@ public class UsingItemServiceImpl implements UsingItemService {
         MyItem myItem = myItemRepository.findById(request.myItemId())
                 .orElseThrow(() -> new ApplicationException(ItemErrorCode.ITEM_NOT_FOUND));
 
-        authenticationService.validateOwnership(myItem.getUserId());
         UsingItem usingItem = request.toEntity(myItem);
         UsingItem savedItem = usingItemRepository.save(usingItem);
-
-        internalService.recordActivityLog("ITEM", savedItem.getUsingItemId(), "CREATE", userId);
 
         return UsingItemResponse.from(savedItem);
     }
@@ -58,7 +53,6 @@ public class UsingItemServiceImpl implements UsingItemService {
     public UsingItemResponse updateUsingItem(Long usingItemId, UsingItemRequest request) {
         UsingItem usingItem = usingItemRepository.findById(usingItemId)
                 .orElseThrow(() -> new ApplicationException(ItemErrorCode.ITEM_NOT_FOUND));
-        authenticationService.validateOwnership(usingItem.getMyItem().getUserId());
 
         Long userId = authenticationService.getUserId();
 
@@ -68,8 +62,6 @@ public class UsingItemServiceImpl implements UsingItemService {
                 .build();
         UsingItem savedUsingItem = usingItemRepository.save(updatedUsingItem);
 
-        internalService.recordActivityLog("ITEM", usingItemId, "UPDATE", userId);
-
         return UsingItemResponse.from(savedUsingItem);
     }
 
@@ -78,11 +70,9 @@ public class UsingItemServiceImpl implements UsingItemService {
         Long userId = authenticationService.getUserId();
         UsingItem usingItem = usingItemRepository.findById(usingItemId)
                 .orElseThrow(() -> new ApplicationException(ItemErrorCode.ITEM_NOT_FOUND));
-        authenticationService.validateOwnership(usingItem.getMyItem().getUserId());
 
         usingItemRepository.delete(usingItem);
 
-        internalService.recordActivityLog("ITEM", usingItemId, "DELETE", userId);
     }
 }
 

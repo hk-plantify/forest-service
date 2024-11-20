@@ -6,6 +6,7 @@ import com.plantify.item.domain.entity.Item;
 import com.plantify.item.global.exception.ApplicationException;
 import com.plantify.item.global.exception.errorcode.ItemErrorCode;
 import com.plantify.item.repository.ItemRepository;
+import com.plantify.item.util.UserInfoProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +18,7 @@ import java.util.stream.Collectors;
 public class ItemServiceImpl implements ItemService {
 
     private final ItemRepository itemRepository;
-    private final AuthenticationService authenticationService;
-    private final InternalService internalService;
+    private final UserInfoProvider userInfoProvider;
 
     @Override
     public List<ItemResponse> getAllItems() {
@@ -30,18 +30,15 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemResponse addItem(ItemRequest request) {
-        Long adminId = authenticationService.getUserId();
+        Long adminId = userInfoProvider.getUserInfo().userId();
         Item item = request.toEntity(adminId);
         Item savedItem = itemRepository.save(item);
-
-        internalService.recordActivityLog("ITEM", savedItem.getItemId(), "CREATE", adminId);
 
         return ItemResponse.from(savedItem);
     }
 
     @Override
     public ItemResponse updateItem(Long itemId, ItemRequest request) {
-        Long adminId = authenticationService.getUserId();
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new ApplicationException(ItemErrorCode.ITEM_NOT_FOUND));
 
@@ -53,19 +50,14 @@ public class ItemServiceImpl implements ItemService {
                 .build();
         Item savedItem = itemRepository.save(updatedItem);
 
-        internalService.recordActivityLog("ITEM", itemId, "UPDATE", adminId);
-
         return ItemResponse.from(savedItem);
     }
 
     @Override
     public void deleteItem(Long itemId) {
-        Long adminId = authenticationService.getUserId();
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new ApplicationException(ItemErrorCode.ITEM_NOT_FOUND));
 
         itemRepository.delete(item);
-
-        internalService.recordActivityLog("ITEM", itemId, "DELETE", adminId);
     }
 }

@@ -20,8 +20,6 @@ public class MyItemServiceImpl implements MyItemService {
 
     private final MyItemRepository myItemRepository;
     private final ItemRepository itemRepository;
-    private final AuthenticationService authenticationService;
-    private final InternalService internalService;
 
     @Override
     public List<MyItemResponse> getAllMyItems() {
@@ -48,8 +46,6 @@ public class MyItemServiceImpl implements MyItemService {
         MyItem myItem = request.toEntity(userId, item);
         MyItem savedItem = myItemRepository.save(myItem);
 
-        internalService.recordActivityLog("ITEM", savedItem.getMyItemId(), "CREATE", userId);
-
         return MyItemResponse.from(savedItem);
     }
 
@@ -66,8 +62,6 @@ public class MyItemServiceImpl implements MyItemService {
                 .build();
         MyItem savedItem = myItemRepository.save(updatedItem);
 
-        internalService.recordActivityLog("ITEM", myItemId, "UPDATE", userId);
-
         return MyItemResponse.from(savedItem);
     }
 
@@ -80,6 +74,5 @@ public class MyItemServiceImpl implements MyItemService {
 
         myItemRepository.delete(myItem);
 
-        internalService.recordActivityLog("ITEM", myItemId, "DELETE", userId);
     }
 }
