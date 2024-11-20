@@ -26,7 +26,10 @@ public class MyItem extends BaseEntity {
 
     @Column(nullable = false)
     private Long userId;
+<<<<<<< HEAD
 
     @Column(nullable = false)
     private Status status;
+=======
+>>>>>>> feat/myItem-service
 }
