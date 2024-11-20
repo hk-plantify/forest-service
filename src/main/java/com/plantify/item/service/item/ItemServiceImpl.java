@@ -1,4 +1,4 @@
-package com.plantify.item.service;
+package com.plantify.item.service.item;
 
 import com.plantify.item.domain.dto.request.ItemRequest;
 import com.plantify.item.domain.dto.response.ItemResponse;
