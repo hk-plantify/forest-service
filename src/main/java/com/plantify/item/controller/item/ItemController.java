@@ -2,8 +2,10 @@ package com.plantify.item.controller.item;
 
 import com.plantify.item.domain.dto.request.ItemRequest;
 import com.plantify.item.domain.dto.response.ItemResponse;
+import com.plantify.item.domain.entity.Category;
 import com.plantify.item.global.response.ApiResponse;
 import com.plantify.item.service.item.ItemService;
+import feign.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,13 @@ public class ItemController {
     public ResponseEntity<ApiResponse<List<ItemResponse>>> getAllItems() {
         List<ItemResponse> allItems = itemService.getAllItems();
         return ResponseEntity.ok(ApiResponse.ok(allItems));
+    }
+
+    @GetMapping("/{category}")
+    public ResponseEntity<ApiResponse<List<ItemResponse>>> getItemsByCategory(
+            @PathVariable Category category) {
+        List<ItemResponse> items = itemService.getItemsByCategory(category);
+        return ResponseEntity.ok(ApiResponse.ok(items));
     }
 
     @PostMapping

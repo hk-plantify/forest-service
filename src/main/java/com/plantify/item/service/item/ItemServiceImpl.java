@@ -2,6 +2,7 @@ package com.plantify.item.service.item;
 
 import com.plantify.item.domain.dto.request.ItemRequest;
 import com.plantify.item.domain.dto.response.ItemResponse;
+import com.plantify.item.domain.entity.Category;
 import com.plantify.item.domain.entity.Item;
 import com.plantify.item.global.exception.ApplicationException;
 import com.plantify.item.global.exception.errorcode.ItemErrorCode;
@@ -29,6 +30,14 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    public List<ItemResponse> getItemsByCategory(Category category) {
+        return itemRepository.findByCategory(category)
+                .stream()
+                .map(ItemResponse::from)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public ItemResponse addItem(ItemRequest request) {
         Long adminId = userInfoProvider.getUserInfo().userId();
         Item item = request.toEntity(adminId);
@@ -46,7 +55,7 @@ public class ItemServiceImpl implements ItemService {
                 .name(request.name())
                 .price(request.price())
                 .imageUri(request.imageUri())
-                .category(request.category())
+                .category(Category.valueOf(request.category()))
                 .build();
         Item savedItem = itemRepository.save(updatedItem);
 

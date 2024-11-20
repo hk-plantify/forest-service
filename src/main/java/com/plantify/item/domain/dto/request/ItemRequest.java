@@ -7,7 +7,7 @@ public record ItemRequest(
         String name,
         Long price,
         String imageUri,
-        Category category
+        String category
 ) {
 
     public Item toEntity(Long userId) {
@@ -16,7 +16,11 @@ public record ItemRequest(
                 .userId(userId)
                 .price(price)
                 .imageUri(imageUri)
-                .category(category)
+                .category(toCategory())
                 .build();
+    }
+
+    private Category toCategory() {
+        return Category.valueOf(category.toUpperCase());
     }
 }

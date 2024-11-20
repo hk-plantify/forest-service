@@ -26,23 +26,10 @@ public class SecurityConfig {
                                 "/v3/api-docs/**",
                                 "/swagger-ui.html"
                         ).permitAll()
-
-                        .requestMatchers(HttpMethod.GET, "/v1/items").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/v1/items/**").hasAnyRole("MANAGER", "ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/v1/items/**").hasAnyRole("MANAGER", "ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/v1/items/**").hasAnyRole("MANAGER", "ADMIN")
-
-                        .requestMatchers(HttpMethod.GET, "/v1/items/my-items").hasAnyRole("USER", "MANAGER", "ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/v1/items/my-items").hasAnyRole("USER", "MANAGER", "ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/v1/items/my-items/**").hasAnyRole("USER", "MANAGER", "ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/v1/items/my-items/**").hasAnyRole("USER", "MANAGER", "ADMIN")
-
-                        .requestMatchers(HttpMethod.GET, "/v1/items/my-items/using").hasAnyRole("USER", "MANAGER", "ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/v1/items/my-items/using").hasAnyRole("USER", "MANAGER", "ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/v1/items/my-items/using/**").hasAnyRole("USER", "MANAGER", "ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/v1/items/my-items/using/**").hasAnyRole("USER", "MANAGER", "ADMIN")
-
-                        .anyRequest().authenticated()
+                        .requestMatchers(HttpMethod.POST, "/v1/admin/**")
+                        .hasAnyRole("MANAGER", "ADMIN")
+                        .anyRequest()
+                        .authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
