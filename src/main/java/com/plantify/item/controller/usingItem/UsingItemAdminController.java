@@ -5,7 +5,6 @@ import com.plantify.item.domain.dto.response.UsingItemAdminResponse;
 import com.plantify.item.global.response.ApiResponse;
 import com.plantify.item.service.usingItem.UsingItemAdminService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,30 +18,30 @@ public class UsingItemAdminController {
 
     // 모든 사용중 아이템 조회
     @GetMapping
-    public ResponseEntity<ApiResponse<List<UsingItemAdminResponse>>> getAllUsingItems() {
+    public ApiResponse<List<UsingItemAdminResponse>> getAllUsingItems() {
         List<UsingItemAdminResponse> usingItems = usingItemAdminService.getAllUsingItems();
-        return ResponseEntity.ok(ApiResponse.ok(usingItems));
+        return ApiResponse.ok(usingItems);
     }
 
     // 사용중 아이템 수정
     @PutMapping("/{usingItemId}")
-    public ResponseEntity<ApiResponse<UsingItemAdminResponse>> updateUsingItemPos(
+    public ApiResponse<UsingItemAdminResponse> updateUsingItemPos(
             @PathVariable Long usingItemId, @RequestBody UsingItemAdminRequest request) {
         UsingItemAdminResponse response = usingItemAdminService.updateUsingItemPos(usingItemId, request);
-        return ResponseEntity.ok(ApiResponse.ok(response));
+        return ApiResponse.ok(response);
     }
 
     // 사용중 아이템 삭제
     @DeleteMapping("/{usingItemId}")
-    public ResponseEntity<ApiResponse<Void>> deleteUsingItem(@PathVariable Long usingItemId) {
+    public ApiResponse<Void> deleteUsingItem(@PathVariable Long usingItemId) {
         usingItemAdminService.deleteUsingItem(usingItemId);
-        return ResponseEntity.ok(ApiResponse.ok());
+        return ApiResponse.ok();
     }
 
     // 특정 사용자 모든 사용중 아이템 조회
     @GetMapping("/users/{userId}")
-    public ResponseEntity<ApiResponse<List<UsingItemAdminResponse>>> getAllUsingItemsByUserId(@PathVariable Long userId) {
+    public ApiResponse<List<UsingItemAdminResponse>> getAllUsingItemsByUserId(@PathVariable Long userId) {
         List<UsingItemAdminResponse> usingItems = usingItemAdminService.getAllUsingItemsByUserId(userId);
-        return ResponseEntity.ok(ApiResponse.ok(usingItems));
+        return ApiResponse.ok(usingItems);
     }
 }

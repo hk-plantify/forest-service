@@ -8,6 +8,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -34,9 +35,10 @@ public class JwtFilter extends OncePerRequestFilter {
             try {
                 ApiResponse<AuthUserResponse> authResponse = authServiceClient.getUserInfo("Bearer " + token);
 
-                if (authResponse.getStatus() == HttpStatus.OK && authResponse.getData() != null) {
+                if (authResponse.getStatus() == HttpStatus.OK.value() && authResponse.getData() != null) {
                     AuthUserResponse userResponse = authResponse.getData();
-                    Authentication authentication = getAuthentication(userResponse);
+
+                    Authentication authentication = getAuthentication(userResponse, token);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             } catch (Exception e) {}
@@ -44,9 +46,9 @@ public class JwtFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private Authentication getAuthentication(AuthUserResponse userResponse) {
+    private Authentication getAuthentication(AuthUserResponse userResponse, String token) {
         return new UsernamePasswordAuthenticationToken(
-                userResponse.userId(), null,
+                userResponse.userId(), token,
                 List.of(new SimpleGrantedAuthority("ROLE_" + userResponse.role()))
         );
     }

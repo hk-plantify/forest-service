@@ -3,7 +3,6 @@ package com.plantify.item.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -19,17 +18,26 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
+        http.formLogin(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui.html"
                         ).permitAll()
-                        .requestMatchers(HttpMethod.POST, "/v1/admin/**")
+                        .requestMatchers("/v1/admin/**")
                         .hasAnyRole("MANAGER", "ADMIN")
-                        .anyRequest()
-                        .authenticated()
+                        .requestMatchers(
+                                "/v1/items/my-items",
+                                "/v1/items/my-items/purchase"
+                        ).hasAnyRole("USER")
+                        .requestMatchers(
+                                "/v1/items",
+                                "/v1/items/{category}"
+                        ).permitAll()
+
+                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 

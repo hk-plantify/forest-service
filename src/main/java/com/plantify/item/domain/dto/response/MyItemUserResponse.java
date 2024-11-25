@@ -6,14 +6,14 @@ public record MyItemUserResponse(
         Long myItemId,
         Long itemId,
         String itemName,
-        Long userId)
+        Long quantity)
 {
     public static MyItemUserResponse from(MyItem myItem) {
         return new MyItemUserResponse(
                 myItem.getMyItemId(),
                 myItem.getItem().getItemId(),
                 myItem.getItem().getName(),
-                myItem.getUserId()
+                myItem.getQuantity()
         );
     }
 }

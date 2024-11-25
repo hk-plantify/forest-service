@@ -5,48 +5,48 @@ import com.plantify.item.domain.dto.response.ItemResponse;
 import com.plantify.item.domain.entity.Category;
 import com.plantify.item.global.response.ApiResponse;
 import com.plantify.item.service.item.ItemService;
-import feign.Response;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/items")
+@RequestMapping("/v1")
 public class ItemController {
 
     private final ItemService itemService;
 
-    @GetMapping
-    public ResponseEntity<ApiResponse<List<ItemResponse>>> getAllItems() {
+    // 누구나 가능
+    @GetMapping("/items")
+    public ApiResponse<List<ItemResponse>> getAllItems() {
         List<ItemResponse> allItems = itemService.getAllItems();
-        return ResponseEntity.ok(ApiResponse.ok(allItems));
+        return ApiResponse.ok(allItems);
     }
 
-    @GetMapping("/{category}")
-    public ResponseEntity<ApiResponse<List<ItemResponse>>> getItemsByCategory(
+    // 누구나 가능
+    @GetMapping("/items/{category}")
+    public ApiResponse<List<ItemResponse>> getItemsByCategory(
             @PathVariable Category category) {
         List<ItemResponse> items = itemService.getItemsByCategory(category);
-        return ResponseEntity.ok(ApiResponse.ok(items));
+        return ApiResponse.ok(items);
     }
 
-    @PostMapping
-    public ResponseEntity<ApiResponse<ItemResponse>> createItem(@RequestBody ItemRequest request) {
+    @PostMapping("/admin/items")
+    public ApiResponse<ItemResponse> createItem(@RequestBody ItemRequest request) {
         ItemResponse response = itemService.addItem(request);
-        return ResponseEntity.ok(ApiResponse.ok(response));
+        return ApiResponse.ok(response);
     }
 
-    @PutMapping("/{itemId}")
-    public ResponseEntity<ApiResponse<ItemResponse>> updateItem( @PathVariable Long itemId, @RequestBody ItemRequest request) {
+    @PutMapping("/admin/items/{itemId}")
+    public ApiResponse<ItemResponse> updateItem( @PathVariable Long itemId, @RequestBody ItemRequest request) {
         ItemResponse response = itemService.updateItem(itemId, request);
-        return ResponseEntity.ok(ApiResponse.ok(response));
+        return ApiResponse.ok(response);
     }
 
-    @DeleteMapping("/{itemId}")
-    public ResponseEntity<ApiResponse<Void>> deleteItem(@PathVariable Long itemId) {
+    @DeleteMapping("/admin/items/{itemId}")
+    public ApiResponse<Void> deleteItem(@PathVariable Long itemId) {
         itemService.deleteItem(itemId);
-        return ResponseEntity.ok(ApiResponse.ok());
+        return ApiResponse.ok();
     }
 }

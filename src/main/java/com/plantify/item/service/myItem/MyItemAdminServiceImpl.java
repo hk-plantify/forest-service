@@ -28,6 +28,7 @@ public class MyItemAdminServiceImpl implements MyItemAdminService {
     @Override
     public void deleteMyItem(Long myItemId) {
         MyItem myItem = myItemRepository.findByUserId(myItemId)
+                .stream().findFirst()
                 .orElseThrow(() -> new ApplicationException(ItemErrorCode.ITEM_NOT_FOUND));
         myItemRepository.delete(myItem);
     }

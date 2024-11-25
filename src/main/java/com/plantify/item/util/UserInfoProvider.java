@@ -24,4 +24,5 @@ public class UserInfoProvider {
 
         return new AuthUserResponse(userId, role);
     }
+
 }
