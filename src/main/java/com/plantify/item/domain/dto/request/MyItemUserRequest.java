@@ -2,15 +2,15 @@ package com.plantify.item.domain.dto.request;
 
 import com.plantify.item.domain.entity.Item;
 import com.plantify.item.domain.entity.MyItem;
-import com.plantify.item.domain.entity.Status;
 
-public record MyItemRequest(Long itemId, Status status) {
 
-    public MyItem toEntity(Long kakaoId, Item item) {
+public record MyItemUserRequest(
+        Long itemId
+) {
+    public MyItem toEntity(Long userId, Item item) {
         return MyItem.builder()
-                .userId(kakaoId)
                 .item(item)
-                .status(status)
+                .userId(userId)
                 .build();
     }
 }

@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface MyItemRepository extends JpaRepository<MyItem, Long> {
 
     List<MyItem> findByUserId(Long userId);
+
 }

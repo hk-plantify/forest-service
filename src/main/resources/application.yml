@@ -18,10 +18,13 @@ spring:
     database: mysql
     show-sql: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
 auth:
   service:
     url: http://localhost:8080
+cash:
+  service:
+    url: http://localhost:8888

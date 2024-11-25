@@ -1,13 +1,14 @@
 package com.plantify.item.config;
 
 import com.plantify.item.client.AuthServiceClient;
-import com.plantify.item.domain.dto.response.UserResponse;
+import com.plantify.item.domain.dto.response.AuthUserResponse;
 import com.plantify.item.global.response.ApiResponse;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -32,11 +33,12 @@ public class JwtFilter extends OncePerRequestFilter {
         String token = resolveToken(request);
         if (token != null) {
             try {
-                ApiResponse<UserResponse> authResponse = authServiceClient.getUserInfo("Bearer " + token);
+                ApiResponse<AuthUserResponse> authResponse = authServiceClient.getUserInfo("Bearer " + token);
 
-                if (authResponse.getStatus() == HttpStatus.OK && authResponse.getData() != null) {
-                    UserResponse userResponse = authResponse.getData();
-                    Authentication authentication = getAuthentication(userResponse);
+                if (authResponse.getStatus() == HttpStatus.OK.value() && authResponse.getData() != null) {
+                    AuthUserResponse userResponse = authResponse.getData();
+
+                    Authentication authentication = getAuthentication(userResponse, token);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             } catch (Exception e) {}
@@ -44,9 +46,9 @@ public class JwtFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private Authentication getAuthentication(UserResponse userResponse) {
+    private Authentication getAuthentication(AuthUserResponse userResponse, String token) {
         return new UsernamePasswordAuthenticationToken(
-                userResponse.kakaoId(), null,
+                userResponse.userId(), token,
                 List.of(new SimpleGrantedAuthority("ROLE_" + userResponse.role()))
         );
     }
@@ -59,3 +61,5 @@ public class JwtFilter extends OncePerRequestFilter {
         return null;
     }
 }
+
+

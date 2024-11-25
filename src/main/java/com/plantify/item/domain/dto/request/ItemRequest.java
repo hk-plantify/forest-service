@@ -7,16 +7,20 @@ public record ItemRequest(
         String name,
         Long price,
         String imageUri,
-        Category category
+        String category
 ) {
 
-    public Item toEntity(Long kakaoId) {
+    public Item toEntity(Long userId) {
         return Item.builder()
                 .name(name)
-                .userId(kakaoId)
+                .userId(userId)
                 .price(price)
                 .imageUri(imageUri)
-                .category(category)
+                .category(toCategory())
                 .build();
+    }
+
+    private Category toCategory() {
+        return Category.valueOf(category.toUpperCase());
     }
 }
