@@ -40,10 +40,10 @@ jobs:
     - name: Docker Push
       run: docker push ${{secrets.DOCKER_USERNAME}}/${{secrets.DOCKER_REPO}}:latest
 
-    - name: SSH Remote Commands
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.PASSWORD }}
-        script: ${{ secrets.SCRIPT }}
+    # - name: SSH Remote Commands
+    #   uses: appleboy/ssh-action@v1.0.3
+    #   with:
+    #     host: ${{ secrets.HOST }}
+    #     username: ${{ secrets.USERNAME }}
+    #     key: ${{ secrets.PASSWORD }}
+    #     script: ${{ secrets.SCRIPT }}
