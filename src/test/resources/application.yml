@@ -1,21 +1,18 @@
 jasypt:
   encryptor:
     bean: jasyptStringEncryptor
-    password: ${JASYPT_PASSWORD}
+    password: kijnijijimnkmninjn
 
 spring:
   application:
     name: item
   datasource:
-    url: ENC(UJazH0iM2udLRuftTDVSiOEK03IyFZRsS/KkX2CnluqXhfxfGjEpEx74wSkg/hV+yxtHE8pqyHkhQJdLRvRF+VOyy4QP9iegrVkbigRXYhI=)
-    username: ENC(XhGT41xwg0J9hSXkV9tPjQ==)
-    password: ENC(cOWaniGDoCFEXR9v+wRBVEwsJ5Hg6vQN)
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:h2:mem:testdb
+    username: sa
   jpa:
-    database: mysql
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
