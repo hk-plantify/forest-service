@@ -18,7 +18,7 @@ spring:
 
 auth:
   service:
-    url: http://localhost:8080
+    url: http://auth-service:8080
 cash:
   service:
-    url: http://localhost:8084
+    url: http://cash-service:8080
