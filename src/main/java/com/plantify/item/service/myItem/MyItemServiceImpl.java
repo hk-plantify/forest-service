@@ -1,28 +1,38 @@
 package com.plantify.item.service.myItem;
 
-import com.plantify.item.domain.dto.response.MyItemAdminResponse;
+import com.plantify.item.domain.dto.response.MyItemResponse;
 import com.plantify.item.domain.entity.MyItem;
 import com.plantify.item.global.exception.ApplicationException;
 import com.plantify.item.global.exception.errorcode.ItemErrorCode;
 import com.plantify.item.repository.MyItemRepository;
+import com.plantify.item.global.util.UserInfoProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class MyItemAdminServiceImpl implements MyItemAdminService {
+public class MyItemServiceImpl implements MyItemService {
 
     private final MyItemRepository myItemRepository;
+    private final UserInfoProvider userInfoProvider;
 
     @Override
-    public List<MyItemAdminResponse> getAllMyItems() {
+    public List<MyItemResponse> getMyItemsByUser() {
+        Long userId = userInfoProvider.getUserInfo().userId();
+        return myItemRepository.findByUserId(userId)
+                .stream()
+                .map(MyItemResponse::from)
+                .toList();
+    }
+
+    @Override
+    public List<MyItemResponse> getAllMyItems() {
         return myItemRepository.findAll()
                 .stream()
-                .map(MyItemAdminResponse::from)
-                .collect(Collectors.toList());
+                .map(MyItemResponse::from)
+                .toList();
     }
 
     @Override
@@ -34,10 +44,10 @@ public class MyItemAdminServiceImpl implements MyItemAdminService {
     }
 
     @Override
-    public List<MyItemAdminResponse> getMyItemsByUserId(Long userId) {
+    public List<MyItemResponse> getMyItemsByUserId(Long userId) {
         return myItemRepository.findByUserId(userId)
                 .stream()
-                .map(MyItemAdminResponse::from)
-                .collect(Collectors.toList());
+                .map(MyItemResponse::from)
+                .toList();
     }
 }
