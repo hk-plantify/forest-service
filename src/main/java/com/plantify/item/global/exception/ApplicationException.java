@@ -1,19 +1,22 @@
 package com.plantify.item.global.exception;
 
-import com.plantify.item.global.exception.errorcode.AuthErrorCode;
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 public class ApplicationException extends RuntimeException {
 
+    @Getter
     private final HttpStatus httpStatus;
     private final String message;
 
     public ApplicationException(ErrorCode errorCode) {
-        httpStatus = errorCode.getHttpStatus();
-        message = errorCode.getMessage();
+        super(errorCode.getMessage());
+        this.httpStatus = errorCode.getHttpStatus();
+        this.message = errorCode.getMessage();
     }
 
-    public HttpStatus getHttpStatus() {
-        return null;
+    @Override
+    public String getMessage() {
+        return message;
     }
 }
