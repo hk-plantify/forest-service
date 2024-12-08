@@ -1,7 +1,9 @@
-package com.plantify.item.controller.item;
+package com.plantify.item.controller;
 
+import com.plantify.item.domain.dto.request.ItemPurchaseRequest;
 import com.plantify.item.domain.dto.request.ItemRequest;
 import com.plantify.item.domain.dto.response.ItemResponse;
+import com.plantify.item.domain.dto.response.MyItemResponse;
 import com.plantify.item.domain.entity.Category;
 import com.plantify.item.global.response.ApiResponse;
 import com.plantify.item.service.item.ItemService;
@@ -17,19 +19,27 @@ public class ItemController {
 
     private final ItemService itemService;
 
-    // 누구나 가능
+    // 누구나
     @GetMapping("/items")
     public ApiResponse<List<ItemResponse>> getAllItems() {
         List<ItemResponse> allItems = itemService.getAllItems();
         return ApiResponse.ok(allItems);
     }
 
-    // 누구나 가능
+    // 누구나
     @GetMapping("/items/{category}")
     public ApiResponse<List<ItemResponse>> getItemsByCategory(
             @PathVariable Category category) {
         List<ItemResponse> items = itemService.getItemsByCategory(category);
         return ApiResponse.ok(items);
+    }
+
+    // 유저: 아이템 구매
+    @PostMapping("/purchase")
+    public ApiResponse<MyItemResponse> purchaseItem(
+            @RequestBody ItemPurchaseRequest request) {
+        MyItemResponse response = itemService.purchaseItem(request);
+        return ApiResponse.ok(response);
     }
 
     @PostMapping("/admin/items")

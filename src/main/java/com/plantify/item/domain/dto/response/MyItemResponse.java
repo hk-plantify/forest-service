@@ -2,18 +2,20 @@ package com.plantify.item.domain.dto.response;
 
 import com.plantify.item.domain.entity.MyItem;
 
-public record MyItemAdminResponse(
+public record MyItemResponse(
         Long myItemId,
         Long itemId,
         String itemName,
-        Long userId)
-{
-    public static MyItemAdminResponse from(MyItem myItem) {
-        return new MyItemAdminResponse(
+        Long quantity,
+        String category
+) {
+    public static MyItemResponse from(MyItem myItem) {
+        return new MyItemResponse(
                 myItem.getMyItemId(),
                 myItem.getItem().getItemId(),
                 myItem.getItem().getName(),
-                myItem.getUserId()
+                myItem.getQuantity(),
+                myItem.getItem().getCategory().name()
         );
     }
 }

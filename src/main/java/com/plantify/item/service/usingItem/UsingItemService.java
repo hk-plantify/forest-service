@@ -5,7 +5,7 @@ import com.plantify.item.domain.dto.response.UsingItemAdminResponse;
 
 import java.util.List;
 
-public interface UsingItemAdminService {
+public interface UsingItemService {
 
     List<UsingItemAdminResponse> getAllUsingItems();
     UsingItemAdminResponse updateUsingItemPos(Long usingItemId, UsingItemAdminRequest request);

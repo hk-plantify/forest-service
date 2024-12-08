@@ -1,18 +1,27 @@
 package com.plantify.item.service.item;
 
+import com.plantify.item.client.CashServiceClient;
+import com.plantify.item.domain.dto.request.ItemPurchaseRequest;
+import com.plantify.item.domain.dto.request.CashRequest;
 import com.plantify.item.domain.dto.request.ItemRequest;
+import com.plantify.item.domain.dto.response.CashResponse;
 import com.plantify.item.domain.dto.response.ItemResponse;
+import com.plantify.item.domain.dto.response.MyItemResponse;
 import com.plantify.item.domain.entity.Category;
 import com.plantify.item.domain.entity.Item;
+import com.plantify.item.domain.entity.MyItem;
 import com.plantify.item.global.exception.ApplicationException;
+import com.plantify.item.global.exception.errorcode.CashErrorCode;
 import com.plantify.item.global.exception.errorcode.ItemErrorCode;
+import com.plantify.item.global.response.ApiResponse;
 import com.plantify.item.repository.ItemRepository;
-import com.plantify.item.util.UserInfoProvider;
+import com.plantify.item.repository.MyItemRepository;
+import com.plantify.item.global.util.UserInfoProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,13 +29,15 @@ public class ItemServiceImpl implements ItemService {
 
     private final ItemRepository itemRepository;
     private final UserInfoProvider userInfoProvider;
+    private final CashServiceClient cashServiceClient;
+    private final MyItemRepository myItemRepository;
 
     @Override
     public List<ItemResponse> getAllItems() {
         return itemRepository.findAll()
                 .stream()
                 .map(ItemResponse::from)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -34,7 +45,27 @@ public class ItemServiceImpl implements ItemService {
         return itemRepository.findByCategory(category)
                 .stream()
                 .map(ItemResponse::from)
-                .collect(Collectors.toList());
+                .toList();
+    }
+
+    @Override
+    @Transactional
+    public MyItemResponse purchaseItem(ItemPurchaseRequest request) {
+        Long userId = userInfoProvider.getUserInfo().userId();
+        Item item = itemRepository.findById(request.itemId())
+                .orElseThrow(() -> new ApplicationException(ItemErrorCode.ITEM_NOT_FOUND));
+
+        CashRequest cashRequest = new CashRequest(item.getPrice() * request.quantity(), "USAGE" );
+        ApiResponse<CashResponse> cashResponse = cashServiceClient.buyByCash(cashRequest);
+
+        if (cashResponse.getStatus() != 200) {
+            throw new ApplicationException(CashErrorCode.INSUFFICIENT_BALANCE);
+        }
+
+        MyItem myItem = request.toEntity(userId, item);
+        myItemRepository.save(myItem);
+
+        return MyItemResponse.from(myItem);
     }
 
     @Override
@@ -51,12 +82,7 @@ public class ItemServiceImpl implements ItemService {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new ApplicationException(ItemErrorCode.ITEM_NOT_FOUND));
 
-        Item updatedItem = item.toBuilder()
-                .name(request.name())
-                .price(request.price())
-                .imageUri(request.imageUri())
-                .category(Category.valueOf(request.category()))
-                .build();
+        Item updatedItem = request.updatedItem(item);
         Item savedItem = itemRepository.save(updatedItem);
 
         return ItemResponse.from(savedItem);

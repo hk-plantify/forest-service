@@ -7,7 +7,7 @@ public record ItemRequest(
         String name,
         Long price,
         String imageUri,
-        String category
+        Category category
 ) {
 
     public Item toEntity(Long userId) {
@@ -16,11 +16,16 @@ public record ItemRequest(
                 .userId(userId)
                 .price(price)
                 .imageUri(imageUri)
-                .category(toCategory())
+                .category(category)
                 .build();
     }
 
-    private Category toCategory() {
-        return Category.valueOf(category.toUpperCase());
+    public Item updatedItem(Item item) {
+        return item.toBuilder()
+                .name(this.name())
+                .price(this.price())
+                .imageUri(this.imageUri())
+                .category(this.category)
+                .build();
     }
 }

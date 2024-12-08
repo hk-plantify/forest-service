@@ -1,5 +1,7 @@
 package com.plantify.item.domain.entity;
 
-public enum Category {
-    BACKGROUND, FLOWER, ETC
+import java.io.Serializable;
+
+public enum Category implements Serializable {
+    BACKGROUND, FLOWER, TREE, ETC
 }
