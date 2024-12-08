@@ -35,7 +35,7 @@ public class ItemController {
     }
 
     // 유저: 아이템 구매
-    @PostMapping("/purchase")
+    @PostMapping("/items/purchase")
     public ApiResponse<MyItemResponse> purchaseItem(
             @RequestBody ItemPurchaseRequest request) {
         MyItemResponse response = itemService.purchaseItem(request);

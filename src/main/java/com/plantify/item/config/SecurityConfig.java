@@ -29,12 +29,12 @@ public class SecurityConfig {
                         .requestMatchers("/v1/admin/**")
                         .hasAnyRole("MANAGER", "ADMIN")
                         .requestMatchers(
-                                "/v1/items/my-items",
-                                "/v1/items/my-items/purchase"
+                                "/v1/items/my-items"
                         ).hasAnyRole("USER")
                         .requestMatchers(
                                 "/v1/items",
-                                "/v1/items/{category}"
+                                "/v1/items/{category}",
+                                "/v1/items/purchase"
                         ).permitAll()
 
                         .anyRequest().authenticated()
