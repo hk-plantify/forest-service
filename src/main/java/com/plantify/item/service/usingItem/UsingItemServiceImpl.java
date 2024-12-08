@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class UsingItemAdminServiceImpl implements UsingItemAdminService {
+public class UsingItemServiceImpl implements UsingItemService {
 
     private final UsingItemRepository usingItemRepository;
 
@@ -23,7 +23,7 @@ public class UsingItemAdminServiceImpl implements UsingItemAdminService {
         return usingItemRepository.findAll()
                 .stream()
                 .map(UsingItemAdminResponse::from)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -55,6 +55,6 @@ public class UsingItemAdminServiceImpl implements UsingItemAdminService {
         return usingItems
                 .stream()
                 .map(UsingItemAdminResponse::from)
-                .collect(Collectors.toList());
+                .toList();
     }
 }

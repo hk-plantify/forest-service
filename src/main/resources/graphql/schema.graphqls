@@ -1,0 +1,28 @@
+type Query {
+    getAllUsingItemsByUser: [UsingItemOutput!]!
+}
+
+type Mutation {
+    manageUsingItems(actions: [UsingItemActionInput!]!): [UsingItemOutput!]!
+}
+
+input UsingItemActionInput {
+    action: String!
+    usingItemId: ID
+    myItemId: ID
+    posX: Float
+    posY: Float
+}
+
+type UsingItemOutput {
+    id: ID!
+    myItemId: ID!
+    posX: Float!
+    posY: Float!
+    createdAt: String!
+    updatedAt: String!
+}
+
+type Subscription {
+    usingItemUpdates(userId: ID!): UsingItemOutput!
+}
