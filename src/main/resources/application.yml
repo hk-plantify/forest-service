@@ -18,10 +18,16 @@ spring:
       ddl-auto: update
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  spring:
+    graphql:
+      graphiql:
+        enabled: true
+        printer:
+          enabled: true
 
 auth:
   service:
-    url: http://localhost:8080
+    url: http://auth-service.auth.svc:8080
 cash:
   service:
-    url: http://localhost:8084
+    url: http://cash-service.cash.svc:8080
