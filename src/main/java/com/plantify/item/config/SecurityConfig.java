@@ -24,10 +24,10 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
-                                "/swagger-ui.html"
+                                "/swagger-ui.html",
+                                "/v1/admin/**",
+                                "/"
                         ).permitAll()
-                        .requestMatchers("/v1/admin/**")
-                        .hasAnyRole("MANAGER", "ADMIN")
                         .requestMatchers(
                                 "/v1/items/my-items"
                         ).hasAnyRole("USER")
@@ -36,7 +36,6 @@ public class SecurityConfig {
                                 "/v1/items/{category}",
                                 "/v1/items/purchase"
                         ).permitAll()
-
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
