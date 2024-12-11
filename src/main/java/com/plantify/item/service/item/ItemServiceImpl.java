@@ -17,10 +17,12 @@ import com.plantify.item.global.response.ApiResponse;
 import com.plantify.item.repository.ItemRepository;
 import com.plantify.item.repository.MyItemRepository;
 import com.plantify.item.global.util.UserInfoProvider;
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -50,22 +52,33 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional
-    public MyItemResponse purchaseItem(ItemPurchaseRequest request) {
+    public List<MyItemResponse> purchaseItem(ItemPurchaseRequest request) {
         Long userId = userInfoProvider.getUserInfo().userId();
         Item item = itemRepository.findById(request.itemId())
                 .orElseThrow(() -> new ApplicationException(ItemErrorCode.ITEM_NOT_FOUND));
 
-        CashRequest cashRequest = new CashRequest(item.getPrice() * request.quantity(), "USAGE" );
-        ApiResponse<CashResponse> cashResponse = cashServiceClient.buyByCash(cashRequest);
+        if (request.quantity() <= 0) {
+            throw new ApplicationException(CashErrorCode.INVALID_REQUEST);
+        }
 
-        if (cashResponse.getStatus() != 200) {
+        Long totalPrice = item.getPrice() * request.quantity();
+
+        try {
+            CashRequest cashRequest = new CashRequest(userId, totalPrice, "USE");
+            cashServiceClient.buyByCash(cashRequest).getData();
+        } catch (ApplicationException ae) {
             throw new ApplicationException(CashErrorCode.INSUFFICIENT_BALANCE);
         }
 
-        MyItem myItem = request.toEntity(userId, item);
-        myItemRepository.save(myItem);
+        List<MyItem> myItems = new ArrayList<>();
+        for (int i = 0; i < request.quantity(); i++) {
+            MyItem myItem = request.toEntity(userId, item);
+            myItems.add(myItemRepository.save(myItem));
+        }
 
-        return MyItemResponse.from(myItem);
+        return myItems.stream()
+                .map(MyItemResponse::from)
+                .toList();
     }
 
     @Override

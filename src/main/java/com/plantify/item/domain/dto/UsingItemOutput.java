@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 public record UsingItemOutput(
         Long id,
         Long myItemId,
+        String imageUri,
         Double posX,
         Double posY,
         LocalDateTime createdAt,
@@ -17,6 +18,7 @@ public record UsingItemOutput(
         return new UsingItemOutput(
                 usingItem.getUsingItemId(),
                 usingItem.getMyItem().getMyItemId(),
+                usingItem.getMyItem().getItem().getImageUri(),
                 usingItem.getPosX(),
                 usingItem.getPosY(),
                 usingItem.getCreatedAt(),

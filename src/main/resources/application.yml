@@ -15,7 +15,7 @@ spring:
     database: mysql
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
   graphql:
@@ -27,7 +27,7 @@ spring:
 
 auth:
   service:
-    url: http://auth-service.auth.svc:8080
+    url: http://localhost:8888
 cash:
   service:
-    url: http://cash-service.cash.svc:8080
+    url: http://localhost:2222

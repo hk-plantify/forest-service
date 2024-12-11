@@ -28,17 +28,15 @@ public class ItemController {
 
     // 누구나
     @GetMapping("/items/{category}")
-    public ApiResponse<List<ItemResponse>> getItemsByCategory(
-            @PathVariable Category category) {
+    public ApiResponse<List<ItemResponse>> getItemsByCategory(@PathVariable Category category) {
         List<ItemResponse> items = itemService.getItemsByCategory(category);
         return ApiResponse.ok(items);
     }
 
     // 유저: 아이템 구매
     @PostMapping("/items/purchase")
-    public ApiResponse<MyItemResponse> purchaseItem(
-            @RequestBody ItemPurchaseRequest request) {
-        MyItemResponse response = itemService.purchaseItem(request);
+    public ApiResponse<List<MyItemResponse>> purchaseItem(@RequestBody ItemPurchaseRequest request) {
+        List<MyItemResponse> response = itemService.purchaseItem(request);
         return ApiResponse.ok(response);
     }
 

@@ -17,6 +17,7 @@ input UsingItemActionInput {
 type UsingItemOutput {
     id: ID!
     myItemId: ID!
+    imageUri: String!
     posX: Float!
     posY: Float!
     createdAt: String!

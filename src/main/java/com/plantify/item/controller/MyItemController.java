@@ -1,6 +1,8 @@
 package com.plantify.item.controller;
 
+import com.plantify.item.domain.dto.response.GroupedMyItemWithIdsResponse;
 import com.plantify.item.domain.dto.response.MyItemResponse;
+import com.plantify.item.domain.entity.Category;
 import com.plantify.item.global.response.ApiResponse;
 import com.plantify.item.service.myItem.MyItemService;
 import lombok.RequiredArgsConstructor;
@@ -10,15 +12,14 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-
 public class MyItemController {
 
     private final MyItemService myItemService;
 
     // 유저: 자신의 모든 내 아이템 조회
-    @GetMapping("/v1/items/my-items")
-    public ApiResponse<List<MyItemResponse>> getMyItemsByUser() {
-        List<MyItemResponse> myItems = myItemService.getMyItemsByUser();
+    @GetMapping("/v1/items/my-items/{category}")
+    public ApiResponse<List<GroupedMyItemWithIdsResponse>> getMyItemsByUser(@PathVariable Category category) {
+        List<GroupedMyItemWithIdsResponse> myItems = myItemService.getMyItemsByUser(category);
         return ApiResponse.ok(myItems);
     }
 

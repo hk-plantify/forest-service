@@ -1,6 +1,8 @@
 package com.plantify.item.service.myItem;
 
+import com.plantify.item.domain.dto.response.GroupedMyItemWithIdsResponse;
 import com.plantify.item.domain.dto.response.MyItemResponse;
+import com.plantify.item.domain.entity.Category;
 import com.plantify.item.domain.entity.MyItem;
 import com.plantify.item.global.exception.ApplicationException;
 import com.plantify.item.global.exception.errorcode.ItemErrorCode;
@@ -10,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -18,12 +21,28 @@ public class MyItemServiceImpl implements MyItemService {
     private final MyItemRepository myItemRepository;
     private final UserInfoProvider userInfoProvider;
 
+//    @Override
+//    public List<MyItemResponse> getMyItemsByUser(Category category) {
+//        Long userId = userInfoProvider.getUserInfo().userId();
+//        return myItemRepository.findByItemCategoryAndUserId(category, userId)
+//                .stream()
+//                .map(MyItemResponse::from)
+//                .toList();
+//    }
+
     @Override
-    public List<MyItemResponse> getMyItemsByUser() {
+    public List<GroupedMyItemWithIdsResponse> getMyItemsByUser(Category category) {
         Long userId = userInfoProvider.getUserInfo().userId();
-        return myItemRepository.findByUserId(userId)
+
+        return myItemRepository.findByItemCategoryAndUserId(category, userId)
                 .stream()
-                .map(MyItemResponse::from)
+                .collect(Collectors.groupingBy(
+                        MyItem::getItem,
+                        Collectors.mapping(MyItem::getMyItemId, Collectors.toList()) // 그룹화 값: myItemId 리스트
+                ))
+                .entrySet()
+                .stream()
+                .map(entry -> GroupedMyItemWithIdsResponse.from(entry.getKey(), entry.getValue())) // 응답 변환
                 .toList();
     }
 

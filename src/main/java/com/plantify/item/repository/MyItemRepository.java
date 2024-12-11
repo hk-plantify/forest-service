@@ -1,5 +1,6 @@
 package com.plantify.item.repository;
 
+import com.plantify.item.domain.entity.Category;
 import com.plantify.item.domain.entity.MyItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -10,4 +11,5 @@ public interface MyItemRepository extends JpaRepository<MyItem, Long> {
 
     List<MyItem> findByUserId(Long userId);
     Optional<MyItem> findMyItemByMyItemIdAndUserId(Long myItemId, Long userId);
+    List<MyItem> findByItemCategoryAndUserId(Category category, Long userId);
 }
