@@ -60,7 +60,15 @@ public class UsingItemUserServiceImpl implements UsingItemUserService {
         MyItem myItem = myItemRepository.findMyItemByMyItemIdAndUserId(action.myItemId(), userId)
                 .orElseThrow(() -> new ApplicationException(ItemErrorCode.ITEM_NOT_FOUND));
 
+        long availableQuantity = myItem.getQuantity() - usingItemRepository.countByMyItem_MyItemId(myItem.getMyItemId());
+        if (availableQuantity <= 0) {
+            throw new ApplicationException(ItemErrorCode.INVALID_ITEM_DATA);
+        }
+
         UsingItem newUsingItem = action.CreateUsingItem(myItem);
+        myItem.updateQuantity(myItem.getQuantity() - 1);
+        myItemRepository.save(myItem);
+
         return UsingItemOutput.from(usingItemRepository.save(newUsingItem));
     }
 
@@ -73,12 +81,12 @@ public class UsingItemUserServiceImpl implements UsingItemUserService {
     }
 
     private void deleteUsingItem(UsingItemActionInput action, Long userId) {
-        if (action.usingItemId() == null) {
-            throw new IllegalArgumentException("UsingItem이 null입니다.");
-        }
-
-        usingItemRepository.findByUsingItemIdAndUserId(action.usingItemId(), userId)
+        UsingItem usingItem = usingItemRepository.findByUsingItemIdAndUserId(action.usingItemId(), userId)
                 .orElseThrow(() -> new ApplicationException(ItemErrorCode.ITEM_NOT_FOUND));
+
+        MyItem myItem = usingItem.getMyItem();
+        myItem.updateQuantity(myItem.getQuantity() + 1);
+        myItemRepository.save(myItem);
 
         usingItemRepository.deleteById(action.usingItemId());
     }

@@ -17,9 +17,11 @@ input UsingItemActionInput {
 type UsingItemOutput {
     id: ID!
     myItemId: ID!
+    userId: ID!
     imageUri: String!
     posX: Float!
-    posY: Float!
+    posY: Float
+    category: String!
     createdAt: String!
     updatedAt: String!
 }

@@ -36,6 +36,7 @@ public class UsingItemUserController {
     @SubscriptionMapping
     public Flux<UsingItemOutput> usingItemUpdates(@Argument Long userId) {
         return usingItemSink.asFlux()
-                .filter(update -> update.myItemId().equals(userId));
+                .filter(update -> update.userId().equals(userId));
     }
+
 }

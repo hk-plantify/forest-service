@@ -7,9 +7,11 @@ import java.time.LocalDateTime;
 public record UsingItemOutput(
         Long id,
         Long myItemId,
+        Long userId,
         String imageUri,
         Double posX,
         Double posY,
+        String category,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {
@@ -18,9 +20,11 @@ public record UsingItemOutput(
         return new UsingItemOutput(
                 usingItem.getUsingItemId(),
                 usingItem.getMyItem().getMyItemId(),
+                usingItem.getMyItem().getUserId(),
                 usingItem.getMyItem().getItem().getImageUri(),
                 usingItem.getPosX(),
                 usingItem.getPosY(),
+                usingItem.getMyItem().getItem().getCategory().name(),
                 usingItem.getCreatedAt(),
                 usingItem.getUpdatedAt()
         );

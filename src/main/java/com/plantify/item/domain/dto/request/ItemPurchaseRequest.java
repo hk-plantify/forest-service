@@ -11,6 +11,7 @@ public record ItemPurchaseRequest(
         return MyItem.builder()
                 .item(item)
                 .userId(userId)
+                .quantity(quantity)
                 .build();
     }
 }

@@ -8,7 +8,8 @@ public record MyItemResponse(
         Long itemId,
         String itemName,
         String imageUri,
-        Category category
+        Category category,
+        Long quantity
 ) {
     public static MyItemResponse from(MyItem myItem) {
         return new MyItemResponse(
@@ -16,7 +17,8 @@ public record MyItemResponse(
                 myItem.getItem().getItemId(),
                 myItem.getItem().getName(),
                 myItem.getItem().getImageUri(),
-                myItem.getItem().getCategory()
+                myItem.getItem().getCategory(),
+                myItem.getQuantity()
         );
     }
 }

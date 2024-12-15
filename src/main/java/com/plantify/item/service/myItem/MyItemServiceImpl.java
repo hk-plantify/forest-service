@@ -21,28 +21,13 @@ public class MyItemServiceImpl implements MyItemService {
     private final MyItemRepository myItemRepository;
     private final UserInfoProvider userInfoProvider;
 
-//    @Override
-//    public List<MyItemResponse> getMyItemsByUser(Category category) {
-//        Long userId = userInfoProvider.getUserInfo().userId();
-//        return myItemRepository.findByItemCategoryAndUserId(category, userId)
-//                .stream()
-//                .map(MyItemResponse::from)
-//                .toList();
-//    }
-
     @Override
     public List<GroupedMyItemWithIdsResponse> getMyItemsByUser(Category category) {
         Long userId = userInfoProvider.getUserInfo().userId();
 
         return myItemRepository.findByItemCategoryAndUserId(category, userId)
                 .stream()
-                .collect(Collectors.groupingBy(
-                        MyItem::getItem,
-                        Collectors.mapping(MyItem::getMyItemId, Collectors.toList()) // 그룹화 값: myItemId 리스트
-                ))
-                .entrySet()
-                .stream()
-                .map(entry -> GroupedMyItemWithIdsResponse.from(entry.getKey(), entry.getValue())) // 응답 변환
+                .map(GroupedMyItemWithIdsResponse::from)
                 .toList();
     }
 

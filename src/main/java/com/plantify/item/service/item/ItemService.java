@@ -12,7 +12,7 @@ public interface ItemService {
 
     List<ItemResponse> getAllItems();
     List<ItemResponse> getItemsByCategory(Category category);
-    List<MyItemResponse> purchaseItem(ItemPurchaseRequest request);
+    MyItemResponse purchaseItem(ItemPurchaseRequest request);
     ItemResponse addItem(ItemRequest request);
     ItemResponse updateItem(Long itemId, ItemRequest request);
     void deleteItem(Long itemId);

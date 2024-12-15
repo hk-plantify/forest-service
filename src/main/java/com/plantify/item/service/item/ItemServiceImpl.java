@@ -52,7 +52,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional
-    public List<MyItemResponse> purchaseItem(ItemPurchaseRequest request) {
+    public MyItemResponse purchaseItem(ItemPurchaseRequest request) {
         Long userId = userInfoProvider.getUserInfo().userId();
         Item item = itemRepository.findById(request.itemId())
                 .orElseThrow(() -> new ApplicationException(ItemErrorCode.ITEM_NOT_FOUND));
@@ -70,15 +70,16 @@ public class ItemServiceImpl implements ItemService {
             throw new ApplicationException(CashErrorCode.INSUFFICIENT_BALANCE);
         }
 
-        List<MyItem> myItems = new ArrayList<>();
-        for (int i = 0; i < request.quantity(); i++) {
-            MyItem myItem = request.toEntity(userId, item);
-            myItems.add(myItemRepository.save(myItem));
-        }
+        MyItem myItem = myItemRepository.findByUserIdAndItemItemId(userId, request.itemId())
+                .map(existingMyItem -> {
+                    existingMyItem.updateQuantity(existingMyItem.getQuantity() + request.quantity());
+                    return existingMyItem;
+                })
+                .orElseGet(() -> request.toEntity(userId, item));
 
-        return myItems.stream()
-                .map(MyItemResponse::from)
-                .toList();
+        myItem = myItemRepository.save(myItem);
+
+        return MyItemResponse.from(myItem);
     }
 
     @Override

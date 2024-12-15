@@ -13,4 +13,5 @@ public interface UsingItemRepository extends JpaRepository<UsingItem, Long> {
     List<UsingItem> findByUserId(Long userId);
     @Query("SELECT u FROM UsingItem u WHERE u.usingItemId = :usingItemId AND u.myItem.userId = :userId")
     Optional<UsingItem> findByUsingItemIdAndUserId(Long usingItemId, Long userId);
+    Long countByMyItem_MyItemId(Long myItemId);
 }

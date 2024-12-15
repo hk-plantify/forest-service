@@ -12,4 +12,5 @@ public interface MyItemRepository extends JpaRepository<MyItem, Long> {
     List<MyItem> findByUserId(Long userId);
     Optional<MyItem> findMyItemByMyItemIdAndUserId(Long myItemId, Long userId);
     List<MyItem> findByItemCategoryAndUserId(Category category, Long userId);
+    Optional<MyItem> findByUserIdAndItemItemId(Long userId, Long itemItemId);
 }
