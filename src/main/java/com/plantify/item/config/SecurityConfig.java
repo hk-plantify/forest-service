@@ -36,7 +36,8 @@ public class SecurityConfig {
                                 "/"
                         ).permitAll()
                         .requestMatchers(
-                                "/v1/items/my-items/{category}"
+                                "/v1/items/my-items/{category}",
+                                "/v1/items/my-items/using-items/graphql"
                         ).hasAnyRole("USER")
                         .requestMatchers(
                                 "/v1/items",

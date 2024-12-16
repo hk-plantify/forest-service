@@ -24,6 +24,7 @@ spring:
     schema:
       printer:
         enabled: true
+    path: /v1/items/my-items/using-items/graphql
 
 auth:
   service:
