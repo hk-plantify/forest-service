@@ -38,5 +38,4 @@ public class UsingItemUserController {
         return usingItemSink.asFlux()
                 .filter(update -> update.userId().equals(userId));
     }
-
 }
