@@ -23,8 +23,8 @@ public class UsingItem extends BaseEntity {
     private MyItem myItem;
 
     @Column(nullable = false)
-    private Double posX;
+    private Double posX = 0.0;
 
     @Column(nullable = false)
-    private Double posY;
+    private Double posY = 0.0;
 }
