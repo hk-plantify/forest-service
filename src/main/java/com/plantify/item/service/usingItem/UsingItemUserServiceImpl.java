@@ -68,7 +68,6 @@ public class UsingItemUserServiceImpl implements UsingItemUserService {
         UsingItem newUsingItem = action.CreateUsingItem(myItem);
         myItem.updateQuantity(myItem.getQuantity() - 1);
         myItemRepository.save(myItem);
-
         return UsingItemOutput.from(usingItemRepository.save(newUsingItem));
     }
 
