@@ -22,9 +22,9 @@ public class UsingItem extends BaseEntity {
     @JoinColumn(name = "myItemId", nullable = false)
     private MyItem myItem;
 
-    @Column(nullable = false)
+    @Column
     private Double posX = 0.0;
 
-    @Column(nullable = false)
+    @Column
     private Double posY = 0.0;
 }
